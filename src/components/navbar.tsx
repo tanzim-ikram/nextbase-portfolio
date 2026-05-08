@@ -1,8 +1,12 @@
 import Link from "next/link"
 import { ThemeToggle } from "./theme-toggle"
 import { siteConfig } from "@/config/site"
+import { createClient } from "@/utils/supabase/server"
+import { buttonVariants } from "@/components/ui/button"
 
-export function Navbar() {
+export async function Navbar() {
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center mx-auto px-4 max-w-5xl">
@@ -28,8 +32,13 @@ export function Navbar() {
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <Link href="/" className="md:hidden font-bold">{siteConfig.name}</Link>
           </div>
-          <nav className="flex items-center">
+          <nav className="flex items-center gap-2">
             <ThemeToggle />
+            {session ? (
+              <Link href="/admin" className={buttonVariants({ variant: "ghost", size: "sm" })}>Dashboard</Link>
+            ) : (
+              <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm" })}>Login</Link>
+            )}
           </nav>
         </div>
       </div>

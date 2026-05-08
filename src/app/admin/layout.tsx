@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { LogoutButton } from "@/components/logout-button";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +17,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/experience" className={buttonVariants({ variant: "ghost" }) + " justify-start"}>Experience</Link>
           <Link href="/admin/education" className={buttonVariants({ variant: "ghost" }) + " justify-start"}>Education</Link>
         </nav>
+        
+        <div className="mt-auto flex flex-col">
+          <LogoutButton />
+        </div>
       </aside>
       
       {/* Main Content */}
