@@ -1,2 +1,28 @@
-# nextbase-portfolio
-A high-performance, customizable personal portfolio and blog template built with Next.js 15 (App Router), Supabase, and shadcn/ui. Features a built-in admin CMS, media gallery, dynamic section toggles, and seamless database integration. Perfect for developers looking for a modern "clone-and-go" solution.
+# NextBase Portfolio
+
+A professional portfolio template built with Next.js 15, Supabase, Tailwind CSS, and shadcn/ui.
+
+## Quick Start
+
+1. **Database Setup**: 
+   - Open your Supabase project dashboard.
+   - Navigate to the SQL Editor.
+   - Copy the contents of `supabase/schema.sql` from this project and run it in the SQL Editor to initialize your database schema.
+
+2. **Environment Variables**:
+   - Create a `.env.local` file at the root of the project.
+   - Add your Supabase URL and Anon Key:
+     ```env
+     NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+     ```
+
+3. **Development**:
+   - Run `npm install` to install dependencies.
+   - Run `npm run dev` to start the local development server.
+   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Features
+- Protected `/admin` routes restricted to specific emails using Supabase Middleware.
+- Built-in Dark Mode theme via shadcn/ui.
+- Pre-configured `siteConfig` for easy profile updates.
