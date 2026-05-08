@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!user || user.email !== 'tanzim.ikram@gmail.com') {
+    if (!user || user.email !== process.env.ADMIN_EMAIL) {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }

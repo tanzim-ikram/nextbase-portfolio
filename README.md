@@ -11,10 +11,11 @@ A professional portfolio template built with Next.js 15, Supabase, Tailwind CSS,
 
 2. **Environment Variables**:
    - Create a `.env.local` file at the root of the project.
-   - Add your Supabase URL and Anon Key:
+   - Add your Supabase URL, Anon Key, and Admin Email:
      ```env
      NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
      NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+     ADMIN_EMAIL=your-email@example.com
      ```
 
 3. **Development**:
