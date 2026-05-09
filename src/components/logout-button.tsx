@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
 import { toast } from "sonner";
 
 export function LogoutButton() {
@@ -21,11 +20,10 @@ export function LogoutButton() {
   };
 
   return (
-    <button 
-      className="btn btn-ghost justify-start text-base-content/60 hover:text-base-content mt-auto w-full" 
+    <button
+      className="btn btn-ghost btn-sm text-base-content/60 hover:text-error hover:bg-error/10"
       onClick={handleLogout}
     >
-      <LogOut className="mr-2 h-4 w-4" />
       Logout
     </button>
   );

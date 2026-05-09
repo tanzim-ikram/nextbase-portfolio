@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PublicLayout } from "@/components/public-layout";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Toaster } from "sonner";
@@ -47,11 +48,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <Navbar />
-          <main className="flex-1">
+          <PublicLayout navbar={<Navbar />} footer={<Footer />}>
             {children}
-          </main>
-          <Footer />
+          </PublicLayout>
           <Toaster />
         </ThemeProvider>
       </body>

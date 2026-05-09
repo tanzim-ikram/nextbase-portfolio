@@ -3,8 +3,14 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { ArrowUp } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Hide footer on all admin pages
+  if (pathname?.startsWith("/admin")) return null;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -23,7 +29,7 @@ export function Footer() {
             Blog
           </Link>
         </div>
-        <button 
+        <button
           onClick={scrollToTop}
           className="btn btn-circle btn-sm btn-ghost hover:bg-base-300 transition-colors"
           aria-label="Back to top"
