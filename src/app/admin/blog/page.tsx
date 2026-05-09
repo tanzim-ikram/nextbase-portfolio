@@ -25,6 +25,7 @@ export default async function BlogListPage() {
               <th>Status</th>
               <th>Views</th>
               <th>Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -38,11 +39,28 @@ export default async function BlogListPage() {
                 </td>
                 <td>{post.view_count}</td>
                 <td>{new Date(post.created_at).toLocaleDateString()}</td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/admin/blog/${post.id}/edit`}
+                      className="btn btn-ghost btn-xs"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      target="_blank"
+                      className="btn btn-ghost btn-xs"
+                    >
+                      View
+                    </Link>
+                  </div>
+                </td>
               </tr>
             ))}
             {(!posts || posts.length === 0) && (
               <tr>
-                <td colSpan={4} className="text-center py-8 text-base-content/60">
+                <td colSpan={5} className="text-center py-8 text-base-content/60">
                   No posts found.
                 </td>
               </tr>

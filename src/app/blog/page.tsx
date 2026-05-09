@@ -16,7 +16,12 @@ export default async function BlogPage() {
       <h1 className="text-4xl font-bold mb-8">Blog</h1>
       <div className="grid gap-6">
         {posts?.map((post) => (
-          <div key={post.id} className="card bg-base-200 shadow-xl">
+          <div key={post.id} className="card bg-base-200 shadow-xl overflow-hidden">
+            {post.cover_image && (
+              <figure>
+                <img src={post.cover_image} alt={post.title} className="w-full h-48 object-cover" />
+              </figure>
+            )}
             <div className="card-body">
               <h2 className="card-title">
                 <Link href={`/blog/${post.slug}`} className="hover:underline">

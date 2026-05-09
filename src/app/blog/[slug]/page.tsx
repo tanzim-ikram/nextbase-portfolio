@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
+import { TiptapRenderer } from "@/components/tiptap-renderer";
 
 export const revalidate = 0;
 
@@ -7,7 +8,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const { slug } = await params;
   const supabase = await createClient();
   
-  // Fetch post
   const { data: post } = await supabase
     .from("posts")
     .select("*")
@@ -45,11 +45,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </div>
       )}
 
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <pre className="whitespace-pre-wrap font-sans text-base">
-          {typeof post.content === 'string' ? post.content : JSON.stringify(post.content, null, 2)}
-        </pre>
-      </div>
+      <TiptapRenderer content={post.content} />
     </article>
   );
 }

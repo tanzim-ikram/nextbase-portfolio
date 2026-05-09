@@ -30,12 +30,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <h2 className="font-bold text-2xl mb-2 text-primary tracking-tight">Dashboard</h2>
           <ul className="menu menu-md w-full p-0 gap-1">
             <li><Link href="/admin" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Overview</Link></li>
-            <li><Link href="/admin/settings" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Site Settings</Link></li>
             <li><Link href="/admin/blog" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Blog Posts</Link></li>
             <li><Link href="/admin/projects" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Projects</Link></li>
             <li><Link href="/admin/media" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Media Gallery</Link></li>
             <li><Link href="/admin/experience" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Experience</Link></li>
             <li><Link href="/admin/education" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Education</Link></li>
+            <li><Link href="/admin/profile" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Profile Settings</Link></li>
+            <li><Link href="/admin/settings" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Site Settings</Link></li>
           </ul>
         </aside>
 
