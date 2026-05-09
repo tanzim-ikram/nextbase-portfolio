@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export function SettingsForm({ initialData }: { initialData: any }) {
@@ -17,6 +18,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
     show_publications: true,
   });
 
+  const router = useRouter();
   const supabase = createClient();
 
   const handleSave = async () => {
@@ -27,10 +29,11 @@ export function SettingsForm({ initialData }: { initialData: any }) {
       .eq("id", 1);
 
     if (error) {
-      toast.error("Failed to update settings");
-      console.error(error);
+      toast.error("Failed to update settings: " + (error.message || "Unknown error"));
+      console.error("Supabase Error:", JSON.stringify(error, null, 2), error);
     } else {
       toast.success("Settings updated successfully!");
+      router.refresh();
     }
     setLoading(false);
   };

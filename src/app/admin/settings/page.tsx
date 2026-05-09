@@ -11,7 +11,7 @@ export default async function SettingsPage() {
     <div className="max-w-3xl space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Site Settings</h1>
-        <p className="text-muted-foreground">Manage your portfolio's content and visibility.</p>
+        <p className="text-base-content/60">Manage your portfolio's content and visibility.</p>
       </div>
 
       <SettingsForm initialData={settings} />

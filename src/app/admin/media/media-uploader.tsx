@@ -57,17 +57,17 @@ export function MediaUploader({ onUploadComplete }: { onUploadComplete: () => vo
     <div 
       {...getRootProps()} 
       className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
-        isDragActive ? "border-primary bg-primary/10" : "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50"
+        isDragActive ? "border-primary bg-primary/10" : "border-base-content/25 hover:border-primary/50 hover:bg-base-200"
       }`}
     >
       <input {...getInputProps()} />
-      <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+      <UploadCloud className="mx-auto h-12 w-12 text-base-content/60 mb-4" />
       {uploading ? (
-        <p>Uploading files...</p>
+        <p className="text-base-content/60">Uploading files...</p>
       ) : isDragActive ? (
-        <p>Drop the files here ...</p>
+        <p className="text-base-content/60">Drop the files here ...</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p className="text-base-content/60">Drag 'n' drop some files here, or click to select files</p>
       )}
     </div>
   );

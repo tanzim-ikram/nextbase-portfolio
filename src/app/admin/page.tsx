@@ -17,45 +17,45 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-        <p className="text-base-content/60">Welcome to your NextBase Admin Dashboard.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-primary">Dashboard Overview</h1>
+        <p className="text-base-content/60 mt-1">Welcome to your NextBase Admin Dashboard.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card bg-primary text-primary-content shadow-xl hover:-translate-y-1 transition-transform duration-300">
           <div className="card-body p-6">
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-sm font-medium">Total Blog Views</h3>
-              <Eye className="w-4 h-4 text-base-content/60" />
+              <h3 className="tracking-tight text-sm font-semibold opacity-80">Total Blog Views</h3>
+              <Eye className="w-5 h-5 opacity-80" />
             </div>
-            <div className="text-2xl font-bold">{totalViews}</div>
+            <div className="text-4xl font-bold">{totalViews}</div>
           </div>
         </div>
-        <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card bg-secondary text-secondary-content shadow-xl hover:-translate-y-1 transition-transform duration-300">
           <div className="card-body p-6">
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-sm font-medium">Draft Posts</h3>
-              <FileText className="w-4 h-4 text-base-content/60" />
+              <h3 className="tracking-tight text-sm font-semibold opacity-80">Draft Posts</h3>
+              <FileText className="w-5 h-5 opacity-80" />
             </div>
-            <div className="text-2xl font-bold">{draftCount}</div>
+            <div className="text-4xl font-bold">{draftCount}</div>
           </div>
         </div>
-        <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card bg-accent text-accent-content shadow-xl hover:-translate-y-1 transition-transform duration-300">
           <div className="card-body p-6">
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-sm font-medium">Total Projects</h3>
-              <FolderGit2 className="w-4 h-4 text-base-content/60" />
+              <h3 className="tracking-tight text-sm font-semibold opacity-80">Total Projects</h3>
+              <FolderGit2 className="w-5 h-5 opacity-80" />
             </div>
-            <div className="text-2xl font-bold">{projectCount || 0}</div>
+            <div className="text-4xl font-bold">{projectCount || 0}</div>
           </div>
         </div>
-        <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card bg-neutral text-neutral-content shadow-xl hover:-translate-y-1 transition-transform duration-300">
           <div className="card-body p-6">
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-sm font-medium">Media Files</h3>
-              <ImageIcon className="w-4 h-4 text-base-content/60" />
+              <h3 className="tracking-tight text-sm font-semibold opacity-80">Media Files</h3>
+              <ImageIcon className="w-5 h-5 opacity-80" />
             </div>
-            <div className="text-2xl font-bold">{mediaCount || 0}</div>
+            <div className="text-4xl font-bold">{mediaCount || 0}</div>
           </div>
         </div>
       </div>

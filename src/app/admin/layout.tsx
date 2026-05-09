@@ -5,25 +5,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)]">
       {/* Sidebar */}
-      <aside className="w-64 border-r bg-base-200/50 p-6 flex flex-col gap-4">
-        <h2 className="font-bold text-xl mb-4">Admin Dashboard</h2>
-        <nav className="flex flex-col gap-2">
-          <Link href="/admin" className="btn btn-ghost justify-start">Overview</Link>
-          <Link href="/admin/settings" className="btn btn-ghost justify-start">Site Settings</Link>
-          <Link href="/admin/blog" className="btn btn-ghost justify-start">Blog Posts</Link>
-          <Link href="/admin/projects" className="btn btn-ghost justify-start">Projects</Link>
-          <Link href="/admin/media" className="btn btn-ghost justify-start">Media Gallery</Link>
-          <Link href="/admin/experience" className="btn btn-ghost justify-start">Experience</Link>
-          <Link href="/admin/education" className="btn btn-ghost justify-start">Education</Link>
-        </nav>
+      <aside className="w-64 border-r border-base-300 bg-base-200/50 p-6 flex flex-col gap-4 shadow-xl z-10">
+        <h2 className="font-bold text-2xl mb-2 text-primary tracking-tight">Dashboard</h2>
+        <ul className="menu menu-md w-full p-0 gap-1">
+          <li><Link href="/admin" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Overview</Link></li>
+          <li><Link href="/admin/settings" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Site Settings</Link></li>
+          <li><Link href="/admin/blog" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Blog Posts</Link></li>
+          <li><Link href="/admin/projects" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Projects</Link></li>
+          <li><Link href="/admin/media" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Media Gallery</Link></li>
+          <li><Link href="/admin/experience" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Experience</Link></li>
+          <li><Link href="/admin/education" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Education</Link></li>
+        </ul>
         
-        <div className="mt-auto flex flex-col">
+        <div className="mt-auto flex flex-col border-t border-base-300 pt-4">
           <LogoutButton />
         </div>
       </aside>
       
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 p-8 overflow-y-auto bg-base-100">
         {children}
       </main>
     </div>
