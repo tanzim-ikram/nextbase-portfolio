@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import { siteConfig } from "@/config/site";
-import { Mail } from "lucide-react";
+import { Mail, Send, CheckCircle } from "lucide-react";
 
 const GithubIcon = (props: any) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -20,31 +23,116 @@ const LinkedinIcon = (props: any) => (
 );
 
 export function ConnectMe() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    // Simulate send — replace with a real API call or mailto
+    await new Promise((r) => setTimeout(r, 1000));
+    setStatus("sent");
+    setForm({ name: "", email: "", message: "" });
+  };
+
   return (
     <section id="connect" className="py-12 md:py-24">
-      <div className="max-w-2xl mx-auto text-center space-y-8 card bg-base-200 shadow-xl border border-base-300 p-8 md:p-12">
-        <h2 className="text-3xl font-bold tracking-tight">Let's Connect</h2>
-        <p className="text-lg text-base-content/70">
-          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
-        </p>
-        
-        <div className="flex justify-center gap-6 pt-4">
-          <a href={siteConfig.links.github} target="_blank" rel="noreferrer" className="btn btn-circle btn-lg btn-ghost hover:bg-base-300 transition-colors" aria-label="GitHub">
-            <GithubIcon className="w-8 h-8" />
-          </a>
-          {siteConfig.links.twitter && (
-            <a href={siteConfig.links.twitter} target="_blank" rel="noreferrer" className="btn btn-circle btn-lg btn-ghost hover:bg-base-300 transition-colors" aria-label="Twitter">
-              <TwitterIcon className="w-8 h-8" />
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl font-bold tracking-tight">Connect With Me</h2>
+          <p className="text-base-content/60 text-lg">Got a project in mind? Let's talk.</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 items-start">
+          {/* Left — Info & Socials */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold">Let's build something great</h3>
+              <p className="text-base-content/70 leading-relaxed">
+                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Drop me a message or reach out on social media.
+              </p>
+            </div>
+
+            <a href={`mailto:${siteConfig.links.email}`} className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-content transition-all">
+                <Mail className="w-5 h-5" />
+              </div>
+              <span className="text-base-content/80 group-hover:text-primary transition-colors">{siteConfig.links.email}</span>
             </a>
-          )}
-          {siteConfig.links.linkedin && (
-            <a href={siteConfig.links.linkedin} target="_blank" rel="noreferrer" className="btn btn-circle btn-lg btn-ghost hover:bg-base-300 transition-colors" aria-label="LinkedIn">
-              <LinkedinIcon className="w-8 h-8" />
-            </a>
-          )}
-          <a href={`mailto:${siteConfig.links.email || "hello@example.com"}`} className="btn btn-circle btn-lg btn-ghost hover:bg-base-300 transition-colors" aria-label="Email">
-            <Mail className="w-8 h-8" />
-          </a>
+
+            <div className="flex gap-4 pt-2">
+              <a href={siteConfig.links.github} target="_blank" rel="noreferrer" className="btn btn-circle btn-ghost hover:bg-base-300" aria-label="GitHub">
+                <GithubIcon className="w-6 h-6" />
+              </a>
+              {siteConfig.links.twitter && (
+                <a href={siteConfig.links.twitter} target="_blank" rel="noreferrer" className="btn btn-circle btn-ghost hover:bg-base-300" aria-label="Twitter">
+                  <TwitterIcon className="w-6 h-6" />
+                </a>
+              )}
+              {siteConfig.links.linkedin && (
+                <a href={siteConfig.links.linkedin} target="_blank" rel="noreferrer" className="btn btn-circle btn-ghost hover:bg-base-300" aria-label="LinkedIn">
+                  <LinkedinIcon className="w-6 h-6" />
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Right — Contact Form */}
+          <div className="card bg-base-200 border border-base-300 shadow-sm">
+            <div className="card-body p-6">
+              {status === "sent" ? (
+                <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
+                  <CheckCircle className="w-14 h-14 text-success" />
+                  <h3 className="text-xl font-bold">Message Sent!</h3>
+                  <p className="text-base-content/60">Thanks for reaching out. I'll get back to you soon.</p>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setStatus("idle")}>Send another</button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="form-control">
+                    <label className="label"><span className="label-text font-medium">Your Name</span></label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="John Doe"
+                      className="input input-bordered w-full"
+                      value={form.name}
+                      onChange={e => setForm({ ...form, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label"><span className="label-text font-medium">Email Address</span></label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      className="input input-bordered w-full"
+                      value={form.email}
+                      onChange={e => setForm({ ...form, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label"><span className="label-text font-medium">Message</span></label>
+                    <textarea
+                      required
+                      placeholder="Tell me about your project..."
+                      className="textarea textarea-bordered w-full h-32 resize-none"
+                      value={form.message}
+                      onChange={e => setForm({ ...form, message: e.target.value })}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary w-full gap-2" disabled={status === "sending"}>
+                    {status === "sending" ? (
+                      <span className="loading loading-spinner loading-sm" />
+                    ) : (
+                      <Send className="w-4 h-4" />
+                    )}
+                    {status === "sending" ? "Sending..." : "Send Message"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>

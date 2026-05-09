@@ -10,7 +10,7 @@ import { FeaturedPublications } from "@/components/home/featured-publications";
 import { ConnectMe } from "@/components/home/connect";
 import { FadeIn } from "@/components/fade-in";
 
-export const revalidate = 0; // Disable static rendering for now to see live DB updates
+export const revalidate = 0;
 
 export default async function Home() {
   const supabase = await createClient();
@@ -21,49 +21,54 @@ export default async function Home() {
     .eq("id", 1)
     .single();
 
+  // Default to true when siteSettings is null (DB not seeded yet)
+  const showExperience = siteSettings?.show_experience ?? true;
+  const showEducation = siteSettings?.show_education ?? true;
+  const showServices = siteSettings?.show_services ?? true;
+  const showProjects = siteSettings?.show_projects ?? true;
+  const showPublications = siteSettings?.show_publications ?? true;
+
   return (
-    <div className="container mx-auto px-4 max-w-5xl py-8 space-y-12 overflow-hidden">
+    <div className="container mx-auto px-4 max-w-5xl py-8 space-y-4 overflow-hidden">
       <FadeIn>
         <Hero settings={siteSettings} />
       </FadeIn>
-      
-      {siteSettings?.about_text && (
-        <FadeIn>
-          <About text={siteSettings.about_text} />
-        </FadeIn>
-      )}
+
+      <FadeIn>
+        <About text={siteSettings?.about_text} />
+      </FadeIn>
 
       <FadeIn>
         <Skills />
       </FadeIn>
-      
-      {siteSettings?.show_experience && (
+
+      {showExperience && (
         <FadeIn>
           <Experience />
         </FadeIn>
       )}
 
-      {siteSettings?.show_education && (
+      {showEducation && (
         <FadeIn>
           <Education />
         </FadeIn>
       )}
-      
-      {siteSettings?.show_services && (
+
+      {showPublications && (
+        <FadeIn>
+          <FeaturedPublications />
+        </FadeIn>
+      )}
+
+      {showServices && (
         <FadeIn>
           <Services />
         </FadeIn>
       )}
-      
-      {siteSettings?.show_projects && (
+
+      {showProjects && (
         <FadeIn>
           <FeaturedProjects />
-        </FadeIn>
-      )}
-      
-      {siteSettings?.show_publications && (
-        <FadeIn>
-          <FeaturedPublications />
         </FadeIn>
       )}
 
