@@ -5,5 +5,6 @@ export const siteConfig = {
     github: "https://github.com/tanzim-ikram",
     twitter: "https://twitter.com",
     linkedin: "https://linkedin.com/in/tanzim-ikram",
+    email: "tanzim.ikram@gmail.com",
   },
 }

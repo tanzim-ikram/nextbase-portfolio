@@ -4,6 +4,7 @@ import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -32,17 +33,25 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                let theme = localStorage.getItem('theme') || 'dracula';
+                document.documentElement.setAttribute('data-theme', theme);
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
-        <ThemeProvider
-          attribute="data-theme"
-          defaultTheme="dracula"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <Navbar />
           <main className="flex-1">
             {children}
           </main>
+          <Footer />
           <Toaster />
         </ThemeProvider>
       </body>

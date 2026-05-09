@@ -12,7 +12,7 @@ export async function FeaturedPublications() {
   if (!publications || publications.length === 0) return null;
 
   return (
-    <section>
+    <section id="publications" className="py-12 md:py-24">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Featured Publications</h2>
         <Link href="/publications" className="btn btn-ghost">View all</Link>
