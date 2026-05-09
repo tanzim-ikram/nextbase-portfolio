@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ThemeToggle } from "./theme-toggle"
 import { siteConfig } from "@/config/site"
 import { createClient } from "@/utils/supabase/server"
-import { buttonVariants } from "@/components/ui/button"
 
 export async function Navbar() {
   const supabase = await createClient();
@@ -35,9 +34,9 @@ export async function Navbar() {
           <nav className="flex items-center gap-2">
             <ThemeToggle />
             {session ? (
-              <Link href="/admin" className={buttonVariants({ variant: "ghost", size: "sm" })}>Dashboard</Link>
+              <Link href="/admin" className="btn btn-ghost btn-sm">Dashboard</Link>
             ) : (
-              <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm" })}>Login</Link>
+              <Link href="/login" className="btn btn-ghost btn-sm">Login</Link>
             )}
           </nav>
         </div>

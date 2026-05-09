@@ -1,8 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 
 export async function FeaturedProjects() {
   const supabase = await createClient();
@@ -18,37 +15,35 @@ export async function FeaturedProjects() {
     <section>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
-        <Link href="/projects" className={buttonVariants({ variant: "ghost" })}>View all</Link>
+        <Link href="/projects" className="btn btn-ghost">View all</Link>
       </div>
       <div className="grid gap-6 sm:grid-cols-2">
         {projects.map((project) => (
-          <Card key={project.id} className="flex flex-col">
-            <CardHeader>
-              <CardTitle>
+          <div key={project.id} className="card bg-base-200 shadow-xl flex flex-col">
+            <div className="card-body flex-1">
+              <h3 className="card-title">
                 <Link href={`/projects/${project.slug}`} className="hover:underline">
                   {project.title}
                 </Link>
-              </CardTitle>
-              <CardDescription className="line-clamp-2">{project.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <div className="flex flex-wrap gap-2">
+              </h3>
+              <p className="line-clamp-2 text-base-content/70">{project.description}</p>
+              <div className="flex flex-wrap gap-2 mt-4">
                 {project.tags?.map((tag: string) => (
-                  <Badge key={tag} variant="secondary">{tag}</Badge>
+                  <div key={tag} className="badge badge-secondary">{tag}</div>
                 ))}
               </div>
-            </CardContent>
+            </div>
             {(project.live_url || project.github_url) && (
-              <CardFooter className="gap-2">
+              <div className="card-actions justify-start p-4 pt-0">
                 {project.live_url && (
-                  <a href={project.live_url} target="_blank" rel="noreferrer" className={buttonVariants({ size: "sm" })}>Live Demo</a>
+                  <a href={project.live_url} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live Demo</a>
                 )}
                 {project.github_url && (
-                  <a href={project.github_url} target="_blank" rel="noreferrer" className={buttonVariants({ size: "sm", variant: "outline" })}>GitHub</a>
+                  <a href={project.github_url} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline">GitHub</a>
                 )}
-              </CardFooter>
+              </div>
             )}
-          </Card>
+          </div>
         ))}
       </div>
     </section>

@@ -1,8 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 0;
 
@@ -15,43 +12,43 @@ export default async function BlogListPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Blog Posts</h1>
-          <p className="text-muted-foreground">Manage your blog content.</p>
+          <p className="text-base-content/60">Manage your blog content.</p>
         </div>
-        <Link href="/admin/blog/new" className={buttonVariants()}>Write Post</Link>
+        <Link href="/admin/blog/new" className="btn btn-primary">Write Post</Link>
       </div>
 
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Views</TableHead>
-              <TableHead>Date</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+      <div className="overflow-x-auto border border-base-300 rounded-box">
+        <table className="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Views</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
             {posts?.map((post) => (
-              <TableRow key={post.id}>
-                <TableCell className="font-medium">{post.title}</TableCell>
-                <TableCell>
-                  <Badge variant={post.status === "published" ? "default" : "secondary"}>
+              <tr key={post.id}>
+                <td className="font-medium">{post.title}</td>
+                <td>
+                  <div className={`badge ${post.status === "published" ? "badge-primary" : "badge-secondary"}`}>
                     {post.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>{post.view_count}</TableCell>
-                <TableCell>{new Date(post.created_at).toLocaleDateString()}</TableCell>
-              </TableRow>
+                  </div>
+                </td>
+                <td>{post.view_count}</td>
+                <td>{new Date(post.created_at).toLocaleDateString()}</td>
+              </tr>
             ))}
             {(!posts || posts.length === 0) && (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+              <tr>
+                <td colSpan={4} className="text-center py-8 text-base-content/60">
                   No posts found.
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             )}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </div>
     </div>
   );

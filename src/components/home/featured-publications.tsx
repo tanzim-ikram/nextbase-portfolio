@@ -1,7 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 
 export async function FeaturedPublications() {
   const supabase = await createClient();
@@ -17,30 +15,28 @@ export async function FeaturedPublications() {
     <section>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Featured Publications</h2>
-        <Link href="/publications" className={buttonVariants({ variant: "ghost" })}>View all</Link>
+        <Link href="/publications" className="btn btn-ghost">View all</Link>
       </div>
       <div className="grid gap-6">
         {publications.map((pub) => (
-          <Card key={pub.id}>
-            <CardHeader>
+          <div key={pub.id} className="card bg-base-200 shadow-xl">
+            <div className="card-body">
               <div className="flex justify-between items-start">
                 <div>
-                  <CardTitle>{pub.title}</CardTitle>
-                  <CardDescription className="mt-1">
+                  <h3 className="card-title">{pub.title}</h3>
+                  <p className="mt-1 text-base-content/70">
                     {pub.publisher} • {pub.publish_date ? new Date(pub.publish_date).getFullYear() : ''}
-                  </CardDescription>
+                  </p>
                 </div>
                 {pub.paper_url && (
-                  <a href={pub.paper_url} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline", size: "sm" })}>Read Paper</a>
+                  <a href={pub.paper_url} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm">Read Paper</a>
                 )}
               </div>
-            </CardHeader>
-            {pub.abstract && (
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-3">{pub.abstract}</p>
-              </CardContent>
-            )}
-          </Card>
+              {pub.abstract && (
+                <p className="text-sm text-base-content/60 line-clamp-3 mt-4">{pub.abstract}</p>
+              )}
+            </div>
+          </div>
         ))}
       </div>
     </section>

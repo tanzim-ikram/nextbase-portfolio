@@ -1,7 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 0;
 
@@ -18,29 +16,27 @@ export default async function BlogPage() {
       <h1 className="text-4xl font-bold mb-8">Blog</h1>
       <div className="grid gap-6">
         {posts?.map((post) => (
-          <Card key={post.id}>
-            <CardHeader>
-              <CardTitle>
+          <div key={post.id} className="card bg-base-200 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">
                 <Link href={`/blog/${post.slug}`} className="hover:underline">
                   {post.title}
                 </Link>
-              </CardTitle>
-              <CardDescription>
+              </h2>
+              <p className="text-sm text-base-content/60">
                 {new Date(post.created_at).toLocaleDateString()} • {post.reading_time || "5 min read"} • {post.view_count} views
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{post.excerpt}</p>
+              </p>
+              <p className="text-base-content/80 mt-2">{post.excerpt}</p>
               <div className="flex flex-wrap gap-2 mt-4">
                 {post.tags?.map((tag: string) => (
-                  <Badge key={tag} variant="secondary">{tag}</Badge>
+                  <div key={tag} className="badge badge-secondary">{tag}</div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
         {(!posts || posts.length === 0) && (
-          <p className="text-muted-foreground">No posts found.</p>
+          <p className="text-base-content/60">No posts found.</p>
         )}
       </div>
     </div>

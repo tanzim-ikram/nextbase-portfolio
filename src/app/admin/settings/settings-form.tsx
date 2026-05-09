@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function SettingsForm({ initialData }: { initialData: any }) {
   const [loading, setLoading] = useState(false);
@@ -43,74 +37,89 @@ export function SettingsForm({ initialData }: { initialData: any }) {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Hero Section</CardTitle>
-          <CardDescription>Update the main text on your homepage.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label>Hero Title</Label>
-            <Input 
-              value={formData.hero_title || ""} 
-              onChange={e => setFormData({ ...formData, hero_title: e.target.value })} 
-            />
+      <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card-body">
+          <h2 className="card-title">Hero Section</h2>
+          <p className="text-base-content/60 text-sm mb-4">Update the main text on your homepage.</p>
+          <div className="space-y-4">
+            <div className="form-control w-full">
+              <label className="label"><span className="label-text">Hero Title</span></label>
+              <input 
+                className="input input-bordered w-full"
+                value={formData.hero_title || ""} 
+                onChange={e => setFormData({ ...formData, hero_title: e.target.value })} 
+              />
+            </div>
+            <div className="form-control w-full">
+              <label className="label"><span className="label-text">Hero Subtitle</span></label>
+              <input 
+                className="input input-bordered w-full"
+                value={formData.hero_subtitle || ""} 
+                onChange={e => setFormData({ ...formData, hero_subtitle: e.target.value })} 
+              />
+            </div>
+            <div className="form-control w-full">
+              <label className="label"><span className="label-text">About Text</span></label>
+              <textarea 
+                className="textarea textarea-bordered w-full h-32"
+                value={formData.about_text || ""} 
+                onChange={e => setFormData({ ...formData, about_text: e.target.value })} 
+                rows={4}
+              />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label>Hero Subtitle</Label>
-            <Input 
-              value={formData.hero_subtitle || ""} 
-              onChange={e => setFormData({ ...formData, hero_subtitle: e.target.value })} 
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>About Text</Label>
-            <Textarea 
-              value={formData.about_text || ""} 
-              onChange={e => setFormData({ ...formData, about_text: e.target.value })} 
-              rows={4}
-            />
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Section Visibility</CardTitle>
-          <CardDescription>Toggle which sections are visible on your public portfolio.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center justify-between">
-            <Label className="flex-1 cursor-pointer" htmlFor="show-services">Show Services Section</Label>
-            <Switch 
-              id="show-services"
-              checked={formData.show_services} 
-              onCheckedChange={checked => setFormData({ ...formData, show_services: checked })} 
-            />
+      <div className="card bg-base-200 shadow-sm border border-base-300">
+        <div className="card-body">
+          <h2 className="card-title">Section Visibility</h2>
+          <p className="text-base-content/60 text-sm mb-4">Toggle which sections are visible on your public portfolio.</p>
+          <div className="space-y-6">
+            <div className="form-control w-full">
+              <label className="label cursor-pointer justify-start gap-4">
+                <input 
+                  type="checkbox" 
+                  className="toggle toggle-primary"
+                  id="show-services"
+                  checked={formData.show_services} 
+                  onChange={e => setFormData({ ...formData, show_services: e.target.checked })} 
+                />
+                <span className="label-text font-medium">Show Services Section</span>
+              </label>
+            </div>
+            <div className="form-control w-full">
+              <label className="label cursor-pointer justify-start gap-4">
+                <input 
+                  type="checkbox" 
+                  className="toggle toggle-primary"
+                  id="show-projects"
+                  checked={formData.show_projects} 
+                  onChange={e => setFormData({ ...formData, show_projects: e.target.checked })} 
+                />
+                <span className="label-text font-medium">Show Projects Section</span>
+              </label>
+            </div>
+            <div className="form-control w-full">
+              <label className="label cursor-pointer justify-start gap-4">
+                <input 
+                  type="checkbox" 
+                  className="toggle toggle-primary"
+                  id="show-publications"
+                  checked={formData.show_publications} 
+                  onChange={e => setFormData({ ...formData, show_publications: e.target.checked })} 
+                />
+                <span className="label-text font-medium">Show Publications Section</span>
+              </label>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <Label className="flex-1 cursor-pointer" htmlFor="show-projects">Show Projects Section</Label>
-            <Switch 
-              id="show-projects"
-              checked={formData.show_projects} 
-              onCheckedChange={checked => setFormData({ ...formData, show_projects: checked })} 
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <Label className="flex-1 cursor-pointer" htmlFor="show-publications">Show Publications Section</Label>
-            <Switch 
-              id="show-publications"
-              checked={formData.show_publications} 
-              onCheckedChange={checked => setFormData({ ...formData, show_publications: checked })} 
-            />
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="flex justify-end">
-        <Button onClick={handleSave} disabled={loading}>
+        <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
           {loading ? "Saving..." : "Save Settings"}
-        </Button>
+        </button>
       </div>
     </div>
   );

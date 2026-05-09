@@ -1,6 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
 
 export const revalidate = 0;
 
@@ -16,30 +14,30 @@ export default async function PublicationsPage() {
       <h1 className="text-4xl font-bold mb-8">Publications</h1>
       <div className="grid gap-6">
         {publications?.map((pub) => (
-          <Card key={pub.id}>
-            <CardHeader>
+          <div key={pub.id} className="card bg-base-200 shadow-xl">
+            <div className="card-body">
               <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                 <div>
-                  <CardTitle className="text-xl">{pub.title}</CardTitle>
-                  <CardDescription className="mt-2 text-base">
+                  <h2 className="card-title text-xl">{pub.title}</h2>
+                  <p className="mt-2 text-base text-base-content/70">
                     {pub.publisher} • {pub.publish_date ? new Date(pub.publish_date).toLocaleDateString() : ''}
-                  </CardDescription>
+                  </p>
                 </div>
                 {pub.paper_url && (
-                  <a href={pub.paper_url} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline" })}>Read Paper</a>
+                  <a href={pub.paper_url} target="_blank" rel="noreferrer" className="btn btn-outline">Read Paper</a>
                 )}
               </div>
-            </CardHeader>
-            {pub.abstract && (
-              <CardContent>
-                <h3 className="font-semibold mb-2">Abstract</h3>
-                <p className="text-muted-foreground leading-relaxed">{pub.abstract}</p>
-              </CardContent>
-            )}
-          </Card>
+              {pub.abstract && (
+                <div className="mt-4">
+                  <h3 className="font-semibold mb-2">Abstract</h3>
+                  <p className="text-base-content/70 leading-relaxed">{pub.abstract}</p>
+                </div>
+              )}
+            </div>
+          </div>
         ))}
         {(!publications || publications.length === 0) && (
-          <p className="text-muted-foreground">No publications found.</p>
+          <p className="text-base-content/60">No publications found.</p>
         )}
       </div>
     </div>

@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,42 +33,46 @@ export default function LoginPage() {
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Admin Login</CardTitle>
-          <CardDescription>
+      <div className="card w-full max-w-sm bg-base-200 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title text-2xl">Admin Login</h2>
+          <p className="text-base-content/70">
             Enter your email below to login to your dashboard.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
+          </p>
+          <form onSubmit={handleLogin} className="space-y-4 mt-4">
+            <div className="form-control w-full">
+              <label className="label" htmlFor="email">
+                <span className="label-text">Email</span>
+              </label>
+              <input
                 id="email"
                 type="email"
                 placeholder="m@example.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="input input-bordered w-full"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
+            <div className="form-control w-full">
+              <label className="label" htmlFor="password">
+                <span className="label-text">Password</span>
+              </label>
+              <input
                 id="password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="input input-bordered w-full"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <button type="submit" className="btn btn-primary w-full" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
-            </Button>
+            </button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

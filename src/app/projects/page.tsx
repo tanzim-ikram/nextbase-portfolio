@@ -1,8 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 
 export const revalidate = 0;
 
@@ -18,36 +15,34 @@ export default async function ProjectsPage() {
       <h1 className="text-4xl font-bold mb-8">Projects</h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects?.map((project) => (
-          <Card key={project.id} className="flex flex-col">
-            <CardHeader>
-              <CardTitle>
+          <div key={project.id} className="card bg-base-200 shadow-xl flex flex-col">
+            <div className="card-body flex-1">
+              <h2 className="card-title">
                 <Link href={`/projects/${project.slug}`} className="hover:underline">
                   {project.title}
                 </Link>
-              </CardTitle>
-              <CardDescription className="line-clamp-2">{project.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <div className="flex flex-wrap gap-2">
+              </h2>
+              <p className="line-clamp-2 text-base-content/70">{project.description}</p>
+              <div className="flex flex-wrap gap-2 mt-4">
                 {project.tags?.map((tag: string) => (
-                  <Badge key={tag} variant="secondary">{tag}</Badge>
+                  <div key={tag} className="badge badge-secondary">{tag}</div>
                 ))}
               </div>
-            </CardContent>
+            </div>
             {(project.live_url || project.github_url) && (
-              <CardFooter className="gap-2">
+              <div className="card-actions justify-start p-4 pt-0">
                 {project.live_url && (
-                  <a href={project.live_url} target="_blank" rel="noreferrer" className={buttonVariants({ size: "sm" })}>Live</a>
+                  <a href={project.live_url} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live</a>
                 )}
                 {project.github_url && (
-                  <a href={project.github_url} target="_blank" rel="noreferrer" className={buttonVariants({ size: "sm", variant: "outline" })}>GitHub</a>
+                  <a href={project.github_url} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline">GitHub</a>
                 )}
-              </CardFooter>
+              </div>
             )}
-          </Card>
+          </div>
         ))}
         {(!projects || projects.length === 0) && (
-          <p className="text-muted-foreground col-span-full">No projects found.</p>
+          <p className="text-base-content/60 col-span-full">No projects found.</p>
         )}
       </div>
     </div>

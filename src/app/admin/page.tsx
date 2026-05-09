@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, FileText, FolderGit2, Image as ImageIcon } from "lucide-react";
 
 export const revalidate = 0;
@@ -19,46 +18,46 @@ export default async function AdminDashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-        <p className="text-muted-foreground">Welcome to your NextBase Admin Dashboard.</p>
+        <p className="text-base-content/60">Welcome to your NextBase Admin Dashboard.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Total Blog Views</CardTitle>
-            <Eye className="w-4 h-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+        <div className="card bg-base-200 shadow-sm border border-base-300">
+          <div className="card-body p-6">
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <h3 className="tracking-tight text-sm font-medium">Total Blog Views</h3>
+              <Eye className="w-4 h-4 text-base-content/60" />
+            </div>
             <div className="text-2xl font-bold">{totalViews}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Draft Posts</CardTitle>
-            <FileText className="w-4 h-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </div>
+        </div>
+        <div className="card bg-base-200 shadow-sm border border-base-300">
+          <div className="card-body p-6">
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <h3 className="tracking-tight text-sm font-medium">Draft Posts</h3>
+              <FileText className="w-4 h-4 text-base-content/60" />
+            </div>
             <div className="text-2xl font-bold">{draftCount}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-            <FolderGit2 className="w-4 h-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </div>
+        </div>
+        <div className="card bg-base-200 shadow-sm border border-base-300">
+          <div className="card-body p-6">
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <h3 className="tracking-tight text-sm font-medium">Total Projects</h3>
+              <FolderGit2 className="w-4 h-4 text-base-content/60" />
+            </div>
             <div className="text-2xl font-bold">{projectCount || 0}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Media Files</CardTitle>
-            <ImageIcon className="w-4 h-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </div>
+        </div>
+        <div className="card bg-base-200 shadow-sm border border-base-300">
+          <div className="card-body p-6">
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <h3 className="tracking-tight text-sm font-medium">Media Files</h3>
+              <ImageIcon className="w-4 h-4 text-base-content/60" />
+            </div>
             <div className="text-2xl font-bold">{mediaCount || 0}</div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

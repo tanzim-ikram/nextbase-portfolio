@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import * as Icons from "lucide-react";
 
 export async function Services() {
@@ -20,15 +19,15 @@ export async function Services() {
           // @ts-ignore
           const Icon = Icons[service.icon_name] || Icons.Layout;
           return (
-            <Card key={service.id}>
-              <CardHeader>
+            <div key={service.id} className="card bg-base-200 shadow-xl">
+              <div className="card-body">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                   <Icon className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>{service.title}</CardTitle>
-                <CardDescription>{service.description}</CardDescription>
-              </CardHeader>
-            </Card>
+                <h3 className="card-title">{service.title}</h3>
+                <p className="text-base-content/70">{service.description}</p>
+              </div>
+            </div>
           );
         })}
       </div>

@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 0;
 
@@ -26,7 +25,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     <article className="container mx-auto px-4 max-w-3xl py-12">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-        <div className="flex items-center gap-4 text-muted-foreground">
+        <div className="flex items-center gap-4 text-base-content/60">
           <span>{new Date(post.created_at).toLocaleDateString()}</span>
           <span>•</span>
           <span>{post.reading_time || "5 min read"}</span>
@@ -35,7 +34,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </div>
         <div className="flex flex-wrap gap-2 mt-4">
           {post.tags?.map((tag: string) => (
-            <Badge key={tag} variant="secondary">{tag}</Badge>
+            <div key={tag} className="badge badge-secondary">{tag}</div>
           ))}
         </div>
       </header>
