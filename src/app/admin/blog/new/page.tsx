@@ -45,7 +45,7 @@ export default function NewBlogPostPage() {
   };
 
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="w-full space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">New Blog Post</h1>
         <div className="flex items-center gap-6">
@@ -72,7 +72,11 @@ export default function NewBlogPostPage() {
               <input 
                 className="input input-bordered w-full"
                 value={formData.title} 
-                onChange={e => setFormData({ ...formData, title: e.target.value })} 
+                onChange={e => {
+                  const title = e.target.value;
+                  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                  setFormData({ ...formData, title, slug });
+                }}
                 placeholder="Post Title"
               />
             </div>
@@ -98,16 +102,56 @@ export default function NewBlogPostPage() {
           </div>
 
           <div className="form-control w-full">
-            <label className="label"><span className="label-text">Cover Image URL</span></label>
-            <input 
-              className="input input-bordered w-full"
-              value={formData.cover_image} 
-              onChange={e => setFormData({ ...formData, cover_image: e.target.value })} 
-              placeholder="https://example.com/image.jpg"
-            />
-            {formData.cover_image && (
-              <img src={formData.cover_image} alt="Cover preview" className="mt-2 w-full max-h-48 object-cover rounded-lg" />
-            )}
+            <label className="label"><span className="label-text">Cover Image</span></label>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  className="file-input file-input-bordered file-input-sm w-full max-w-xs" 
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `blog_${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+                    const filePath = `uploads/${fileName}`;
+
+                    setLoading(true);
+                    try {
+                      const { error: uploadError } = await supabase.storage
+                        .from("portfolio_media")
+                        .upload(filePath, file);
+
+                      if (uploadError) throw uploadError;
+
+                      const { data: publicUrlData } = supabase.storage
+                        .from("portfolio_media")
+                        .getPublicUrl(filePath);
+
+                      setFormData({ ...formData, cover_image: publicUrlData.publicUrl });
+                      toast.success("Image uploaded successfully.");
+                    } catch (error: any) {
+                      toast.error(`Error uploading image: ${error.message}`);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                />
+                <span className="text-sm font-medium">OR</span>
+                <input 
+                  className="input input-bordered input-sm flex-1 w-full"
+                  placeholder="Paste image link here..."
+                  value={formData.cover_image} 
+                  onChange={e => setFormData({ ...formData, cover_image: e.target.value })} 
+                />
+              </div>
+              {formData.cover_image && (
+                <div className="mt-2 p-2 border border-base-300 rounded-lg bg-base-100 flex justify-center">
+                  <img src={formData.cover_image} alt="Cover preview" className="max-h-48 w-auto object-contain rounded-lg" />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="form-control w-full">

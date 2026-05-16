@@ -40,8 +40,19 @@ export function SettingsForm({ initialData }: { initialData: any }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="card bg-base-200 shadow-sm border border-base-300">
+    <div className="w-full space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Site Settings</h1>
+          <p className="text-base-content/60 mt-1">Manage your portfolio's content and visibility.</p>
+        </div>
+        <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+          {loading ? "Saving..." : "Save Settings"}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="card bg-base-200 shadow-sm border border-base-300">
         <div className="card-body">
           <h2 className="card-title">Hero Section</h2>
           <p className="text-base-content/60 text-sm mb-4">Update the main text on your homepage.</p>
@@ -195,12 +206,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
           </div>
         </div>
       </div>
-
-      <div className="flex justify-end">
-        <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
-          {loading ? "Saving..." : "Save Settings"}
-        </button>
-      </div>
+    </div>
     </div>
   );
 }
