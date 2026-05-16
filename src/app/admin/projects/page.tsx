@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { DeleteButton } from "@/components/delete-button";
 import { CheckCircle2, XCircle } from "lucide-react";
 
 export const revalidate = 0;
@@ -26,6 +27,7 @@ export default async function ProjectsPage() {
               <th>Slug</th>
               <th>Featured</th>
               <th>Links</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -54,11 +56,22 @@ export default async function ProjectsPage() {
                     )}
                   </div>
                 </td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/admin/projects/${project.id}/edit`}
+                      className="btn btn-ghost btn-xs"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteButton id={project.id} table="projects" title={project.title} />
+                  </div>
+                </td>
               </tr>
             ))}
             {(!projects || projects.length === 0) && (
               <tr>
-                <td colSpan={4} className="text-center py-8 text-base-content/60">
+                <td colSpan={5} className="text-center py-8 text-base-content/60">
                   No projects found. Try creating one!
                 </td>
               </tr>

@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { DeleteButton } from "@/components/delete-button";
 
 export const revalidate = 0;
 
@@ -25,6 +26,7 @@ export default async function ExperiencePage() {
               <th>Position</th>
               <th>Duration</th>
               <th>Current</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -39,11 +41,22 @@ export default async function ExperiencePage() {
                 <td>
                   {exp.is_current ? <div className="badge badge-primary">Yes</div> : null}
                 </td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/admin/experience/${exp.id}/edit`}
+                      className="btn btn-ghost btn-xs"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteButton id={exp.id} table="experience" title={exp.company} />
+                  </div>
+                </td>
               </tr>
             ))}
             {(!experiences || experiences.length === 0) && (
               <tr>
-                <td colSpan={4} className="text-center py-8 text-base-content/60">
+                <td colSpan={5} className="text-center py-8 text-base-content/60">
                   No experience entries found. Run the schema_update.sql first!
                 </td>
               </tr>

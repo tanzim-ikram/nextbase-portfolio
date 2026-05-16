@@ -1,10 +1,25 @@
 @import "tailwindcss";
 @plugin "daisyui";
-@plugin "daisyui/theme" { name: "dracula"; }
-@plugin "daisyui/theme" { name: "synthwave"; }
-@plugin "daisyui/theme" { name: "cyberpunk"; }
-@plugin "daisyui/theme" { name: "retro"; }
-@plugin "daisyui/theme" { name: "cupcake"; }
+
+@plugin "daisyui/theme" {
+  name: "dracula";
+}
+
+@plugin "daisyui/theme" {
+  name: "synthwave";
+}
+
+@plugin "daisyui/theme" {
+  name: "cyberpunk";
+}
+
+@plugin "daisyui/theme" {
+  name: "retro";
+}
+
+@plugin "daisyui/theme" {
+  name: "cupcake";
+}
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
