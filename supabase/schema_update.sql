@@ -59,3 +59,22 @@ CREATE POLICY "Auth full access education" ON education FOR ALL USING (auth.role
 
 DROP POLICY IF EXISTS "Auth full access social_links" ON social_links;
 CREATE POLICY "Auth full access social_links" ON social_links FOR ALL USING (auth.role() = 'authenticated');
+
+-- 11. PUBLICATIONS
+CREATE TABLE IF NOT EXISTS publications (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  title TEXT NOT NULL,
+  publisher TEXT NOT NULL,
+  date DATE,
+  url TEXT,
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE publications ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read access for publications" ON publications;
+CREATE POLICY "Public read access for publications" ON publications FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Auth full access publications" ON publications;
+CREATE POLICY "Auth full access publications" ON publications FOR ALL USING (auth.role() = 'authenticated');
