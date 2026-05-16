@@ -26,7 +26,7 @@ export async function FeaturedPublications() {
 
   return (
     <section id="publications" className="py-12 md:py-24">
-      <div className="max-w-3xl mx-auto space-y-10">
+      <div className="w-full mx-auto space-y-10">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold tracking-tight">Publications</h2>
           <Link href="/publications" className="btn btn-ghost btn-sm">View all →</Link>

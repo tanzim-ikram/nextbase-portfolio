@@ -43,7 +43,7 @@ export function ConnectMe() {
 
   return (
     <section id="connect" className="py-12 md:py-24">
-      <div className="max-w-2xl mx-auto space-y-8">
+      <div className="w-full mx-auto space-y-8">
 
         {/* Header */}
         <div className="text-center space-y-3">

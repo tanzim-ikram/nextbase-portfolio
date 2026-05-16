@@ -168,6 +168,30 @@ export function SettingsForm({ initialData }: { initialData: any }) {
                 <span className="label-text font-medium">Show Publications Section</span>
               </label>
             </div>
+            <div className="form-control w-full">
+              <label className="label cursor-pointer justify-start gap-4">
+                <input 
+                  type="checkbox" 
+                  className="toggle toggle-primary"
+                  id="show-experience"
+                  checked={formData.show_experience} 
+                  onChange={e => setFormData({ ...formData, show_experience: e.target.checked })} 
+                />
+                <span className="label-text font-medium">Show Experience Section</span>
+              </label>
+            </div>
+            <div className="form-control w-full">
+              <label className="label cursor-pointer justify-start gap-4">
+                <input 
+                  type="checkbox" 
+                  className="toggle toggle-primary"
+                  id="show-education"
+                  checked={formData.show_education} 
+                  onChange={e => setFormData({ ...formData, show_education: e.target.checked })} 
+                />
+                <span className="label-text font-medium">Show Education Section</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>

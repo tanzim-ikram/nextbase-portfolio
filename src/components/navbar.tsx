@@ -4,22 +4,25 @@ import { NavLinks } from "./nav-links"
 import { siteConfig } from "@/config/site"
 import { createClient } from "@/utils/supabase/server"
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/#about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Skills", href: "/#skills" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Education", href: "/#education" },
-  { label: "Publications", href: "/#publications" },
-  { label: "Services", href: "/#services" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Contact", href: "/#connect" },
-];
+
 
 export async function Navbar() {
   const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
+  const { data: settings } = await supabase.from("site_settings").select("*").eq("id", 1).single();
+
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/#about" },
+    { label: "Blog", href: "/blog" },
+    { label: "Skills", href: "/#skills" },
+    ...(settings?.show_experience !== false ? [{ label: "Experience", href: "/#experience" }] : []),
+    ...(settings?.show_education !== false ? [{ label: "Education", href: "/#education" }] : []),
+    ...(settings?.show_publications !== false ? [{ label: "Publications", href: "/#publications" }] : []),
+    ...(settings?.show_services !== false ? [{ label: "Services", href: "/#services" }] : []),
+    ...(settings?.show_projects !== false ? [{ label: "Projects", href: "/#projects" }] : []),
+    { label: "Contact", href: "/#connect" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-base-100/95 backdrop-blur supports-[backdrop-filter]:bg-base-100/60">

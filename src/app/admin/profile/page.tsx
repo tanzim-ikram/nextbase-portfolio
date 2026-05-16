@@ -52,13 +52,14 @@ export default function ProfileSettings() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <div className="w-full space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Profile Settings</h1>
         <p className="text-base-content/60">Manage your account credentials.</p>
       </div>
 
-      <div className="card bg-base-200 border border-base-300 shadow-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="card bg-base-200 border border-base-300 shadow-sm">
         <div className="card-body">
           <h2 className="card-title mb-4">Update Email</h2>
           <form onSubmit={handleUpdateEmail} className="space-y-4">
@@ -84,9 +85,9 @@ export default function ProfileSettings() {
             </button>
           </form>
         </div>
-      </div>
+        </div>
 
-      <div className="card bg-base-200 border border-base-300 shadow-sm">
+        <div className="card bg-base-200 border border-base-300 shadow-sm">
         <div className="card-body">
           <h2 className="card-title mb-4">Change Password</h2>
           <form onSubmit={handleUpdatePassword} className="space-y-4">
@@ -124,6 +125,7 @@ export default function ProfileSettings() {
               {loading ? <span className="loading loading-spinner" /> : "Change Password"}
             </button>
           </form>
+        </div>
         </div>
       </div>
     </div>

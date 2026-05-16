@@ -33,7 +33,7 @@ export async function Experience() {
 
   return (
     <section id="experience" className="py-12 md:py-24">
-      <div className="max-w-3xl mx-auto space-y-10">
+      <div className="w-full mx-auto space-y-10">
         <h2 className="text-3xl font-bold tracking-tight text-center">Experience</h2>
         <div className="space-y-6">
           {experiences.map((exp: any) => (
