@@ -18,7 +18,7 @@ import {
   Highlighter, Upload,
   Undo2, Redo2, Minus,
 } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 
 const HIGHLIGHT_COLORS = [
   { label: "Yellow", value: "#fef08a" },
@@ -109,6 +109,13 @@ export function TiptapEditor({
       },
     },
   });
+
+  // Force set content if it's provided but editor is empty (common in SSR/Next.js hydration)
+  useEffect(() => {
+    if (editor && content && editor.isEmpty) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   const addLink = useCallback(() => {
     if (!editor) return;

@@ -6,6 +6,7 @@ CREATE TABLE site_settings (
   id INTEGER PRIMARY KEY DEFAULT 1,
   hero_title TEXT DEFAULT 'Hi, I am a Developer',
   hero_subtitle TEXT DEFAULT 'Building digital experiences with Next.js and Supabase',
+  logo_url TEXT,
   about_text TEXT,
   show_services BOOLEAN DEFAULT true,
   show_projects BOOLEAN DEFAULT true,
@@ -90,3 +91,27 @@ BEGIN
   WHERE id = post_id;
 END;
 $$ LANGUAGE plpgsql;
+
+-- 8. STORAGE BUCKET
+-- Create the portfolio_media bucket
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('portfolio_media', 'portfolio_media', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage RLS Policies
+-- Allow public viewing
+CREATE POLICY "Public Access" 
+ON storage.objects FOR SELECT 
+USING (bucket_id = 'portfolio_media');
+
+-- Allow authenticated uploads
+CREATE POLICY "Auth Insert" 
+ON storage.objects FOR INSERT 
+TO authenticated 
+WITH CHECK (bucket_id = 'portfolio_media');
+
+-- Allow authenticated deletes
+CREATE POLICY "Auth Delete" 
+ON storage.objects FOR DELETE 
+TO authenticated 
+USING (bucket_id = 'portfolio_media');

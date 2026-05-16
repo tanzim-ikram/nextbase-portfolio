@@ -10,6 +10,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
   const [formData, setFormData] = useState(initialData || {
     hero_title: "",
     hero_subtitle: "",
+    logo_url: "",
     about_text: "",
     show_services: true,
     show_projects: true,
@@ -52,6 +53,58 @@ export function SettingsForm({ initialData }: { initialData: any }) {
                 value={formData.hero_title || ""} 
                 onChange={e => setFormData({ ...formData, hero_title: e.target.value })} 
               />
+            </div>
+            <div className="form-control w-full">
+              <label className="label"><span className="label-text">Site Logo</span></label>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    className="file-input file-input-bordered file-input-sm w-full max-w-xs" 
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      
+                      const fileExt = file.name.split('.').pop();
+                      const fileName = `logo_${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+                      const filePath = `uploads/${fileName}`;
+
+                      setLoading(true);
+                      try {
+                        const { error: uploadError } = await supabase.storage
+                          .from("portfolio_media")
+                          .upload(filePath, file);
+
+                        if (uploadError) throw uploadError;
+
+                        const { data: publicUrlData } = supabase.storage
+                          .from("portfolio_media")
+                          .getPublicUrl(filePath);
+
+                        setFormData({ ...formData, logo_url: publicUrlData.publicUrl });
+                        toast.success("Logo uploaded successfully. Don't forget to save settings.");
+                      } catch (error: any) {
+                        toast.error(`Error uploading logo: ${error.message}`);
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                  />
+                  <span className="text-sm font-medium">OR</span>
+                  <input 
+                    className="input input-bordered input-sm flex-1 w-full"
+                    placeholder="Provide image link directly (e.g., https://example.com/logo.png)"
+                    value={formData.logo_url || ""} 
+                    onChange={e => setFormData({ ...formData, logo_url: e.target.value })} 
+                  />
+                </div>
+                {formData.logo_url && (
+                  <div className="mt-2 p-4 border border-base-300 rounded-lg bg-base-100 flex justify-center">
+                    <img src={formData.logo_url} alt="Site Logo Preview" className="h-16 w-auto object-contain" />
+                  </div>
+                )}
+              </div>
             </div>
             <div className="form-control w-full">
               <label className="label"><span className="label-text">Hero Subtitle</span></label>

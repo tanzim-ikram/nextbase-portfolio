@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ThemeToggle } from "./theme-toggle"
+import { NavLinks } from "./nav-links"
 import { siteConfig } from "@/config/site"
 import { createClient } from "@/utils/supabase/server"
 
@@ -30,17 +31,11 @@ export async function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium flex-1 overflow-x-auto">
-          {navLinks.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="px-3 py-1.5 rounded-lg transition-colors hover:bg-base-200 hover:text-primary text-base-content/70 whitespace-nowrap"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks 
+          links={navLinks} 
+          className="hidden md:flex items-center gap-1 text-sm font-medium flex-1 overflow-x-auto" 
+          itemClassName="py-1.5"
+        />
 
         {/* Right actions */}
         <div className="flex items-center gap-2 ml-auto shrink-0">
@@ -61,17 +56,11 @@ export async function Navbar() {
 
       {/* Mobile nav — horizontal scroll row */}
       <div className="md:hidden border-t border-base-300 overflow-x-auto">
-        <nav className="flex items-center px-4 py-2 gap-1 text-sm font-medium w-max">
-          {navLinks.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="px-3 py-1 rounded-lg transition-colors hover:bg-base-200 hover:text-primary text-base-content/70 whitespace-nowrap"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks 
+          links={navLinks} 
+          className="flex items-center px-4 py-2 gap-1 text-sm font-medium w-max" 
+          itemClassName="py-1"
+        />
       </div>
     </header>
   )
