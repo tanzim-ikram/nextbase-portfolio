@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { DeleteButton } from "@/components/delete-button";
 
 export const revalidate = 0;
 
@@ -54,6 +55,7 @@ export default async function BlogListPage() {
                     >
                       View
                     </Link>
+                    <DeleteButton id={post.id} table="posts" title={post.title} />
                   </div>
                 </td>
               </tr>
