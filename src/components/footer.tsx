@@ -22,11 +22,11 @@ export function Footer() {
           © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
         </div>
         <div className="flex items-center space-x-6 text-sm font-medium">
-          <Link href="/projects" className="transition-colors hover:text-primary text-base-content/70">
-            Projects
+          <Link href="/privacy" className="transition-colors hover:text-primary text-base-content/70 hover:underline">
+            Privacy Policy
           </Link>
-          <Link href="/blog" className="transition-colors hover:text-primary text-base-content/70">
-            Blog
+          <Link href="/terms" className="transition-colors hover:text-primary text-base-content/70 hover:underline">
+            Terms & Conditions
           </Link>
         </div>
         <button
