@@ -64,12 +64,26 @@ CREATE POLICY "Auth full access social_links" ON social_links FOR ALL USING (aut
 CREATE TABLE IF NOT EXISTS publications (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   title TEXT NOT NULL,
-  publisher TEXT NOT NULL,
-  date DATE,
-  url TEXT,
+  authors TEXT,
+  journal TEXT,
+  publisher TEXT,
+  publish_year TEXT,
   description TEXT,
+  url TEXT,
+  highlight_author TEXT,
+  is_featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Ensure existing publications tables get the new columns
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS authors TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS journal TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS publisher TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS publish_year TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS url TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS highlight_author TEXT;
+ALTER TABLE publications ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
 
 ALTER TABLE publications ENABLE ROW LEVEL SECURITY;
 

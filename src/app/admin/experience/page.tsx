@@ -57,7 +57,7 @@ export default async function ExperiencePage() {
             {(!experiences || experiences.length === 0) && (
               <tr>
                 <td colSpan={5} className="text-center py-8 text-base-content/60">
-                  No experience entries found. Run the schema_update.sql first!
+                  No experience entries found.
                 </td>
               </tr>
             )}

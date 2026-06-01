@@ -52,7 +52,7 @@ export async function Navbar() {
               <LogoutButton className="btn btn-secondary btn-sm" />
             </>
           ) : (
-            <Link href="/login" className="btn btn-ghost btn-sm">Login</Link>
+            <Link href="/login" className="btn btn-primary btn-sm">Login</Link>
           )}
         </div>
 

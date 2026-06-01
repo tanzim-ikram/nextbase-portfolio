@@ -57,7 +57,7 @@ export default async function EducationPage() {
             {(!education || education.length === 0) && (
               <tr>
                 <td colSpan={5} className="text-center py-8 text-base-content/60">
-                  No education entries found. Run the schema_update.sql first!
+                  No education entries found.
                 </td>
               </tr>
             )}

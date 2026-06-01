@@ -55,10 +55,13 @@ CREATE TABLE projects (
 CREATE TABLE publications (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   title TEXT NOT NULL,
+  authors TEXT,
+  journal TEXT,
   publisher TEXT,
-  publish_date DATE,
-  paper_url TEXT,
-  abstract TEXT,
+  publish_year TEXT,
+  description TEXT,
+  url TEXT,
+  highlight_author TEXT,
   is_featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
