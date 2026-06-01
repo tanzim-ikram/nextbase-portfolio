@@ -27,6 +27,17 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
   const [newPlatform, setNewPlatform] = useState("GitHub");
   const [newUrl, setNewUrl] = useState("");
   const [isAddingNewLink, setIsAddingNewLink] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const moveLink = (from: number, to: number) => {
+    if (to < 0 || to >= socialLinks.length) return;
+    const updated = [...socialLinks];
+    const [moved] = updated.splice(from, 1);
+    updated.splice(to, 0, moved);
+    setSocialLinks(updated);
+    setCookieSocialLinks(updated);
+  };
 
   const router = useRouter();
   const supabase = createClient();
@@ -192,14 +203,17 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
                       />
                     </div>
                     {formData.logo_url && (
-                      <div className="mt-2 p-4 border border-base-300 rounded-lg bg-base-100 flex flex-col items-center gap-3">
+                      <div className="relative mt-2 p-4 border border-base-300 rounded-lg bg-base-100 flex flex-col items-center gap-3">
                         <img src={formData.logo_url} alt="Site Logo Preview" className="h-16 w-auto object-contain" />
                         <button
                           type="button"
-                          className="btn btn-outline btn-error btn-xs"
+                          className="absolute top-2 right-2 btn btn-ghost btn-circle btn-sm text-error hover:bg-error/10"
+                          title="Remove Logo"
                           onClick={() => setFormData({ ...formData, logo_url: "" })}
                         >
-                          Remove Logo
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                         </button>
                       </div>
                     )}
@@ -264,32 +278,92 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
                   {socialLinks.length > 0 ? (
                     <div className="space-y-2 mb-4">
                       {socialLinks.map((link, index) => (
-                        <div key={index} className="flex items-center justify-between bg-base-100 p-3 rounded-lg border border-base-300 hover:border-primary/30 transition-all duration-200">
-                          <div className="flex items-center gap-3 truncate mr-2">
-                            <span className="badge badge-primary font-medium text-xs py-2">{link.platform}</span>
-                            <a 
+                        <div
+                          key={index}
+                          draggable
+                          onDragStart={() => setDragIndex(index)}
+                          onDragOver={e => { e.preventDefault(); setDragOverIndex(index); }}
+                          onDragEnd={() => {
+                            if (dragIndex !== null && dragOverIndex !== null && dragIndex !== dragOverIndex) {
+                              moveLink(dragIndex, dragOverIndex);
+                            }
+                            setDragIndex(null);
+                            setDragOverIndex(null);
+                          }}
+                          className={[
+                            "flex items-center justify-between bg-base-100 p-3 rounded-lg border transition-all duration-150",
+                            dragOverIndex === index && dragIndex !== index
+                              ? "border-primary bg-primary/5 scale-[1.01] shadow-md"
+                              : "border-base-300 hover:border-primary/30",
+                            dragIndex === index ? "opacity-40" : "opacity-100",
+                          ].join(" ")}
+                        >
+                          {/* Drag handle */}
+                          <div
+                            className="cursor-grab active:cursor-grabbing text-base-content/30 hover:text-base-content/60 pr-2 flex-shrink-0 touch-none"
+                            title="Drag to reorder"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h16M4 16h16" />
+                            </svg>
+                          </div>
+
+                          {/* Platform + URL */}
+                          <div className="flex items-center gap-3 truncate mr-2 flex-1">
+                            <span className="badge badge-primary font-medium text-xs py-2 flex-shrink-0">{link.platform}</span>
+                            <a
                               href={link.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm text-base-content/80 hover:text-primary hover:underline truncate max-w-[180px] sm:max-w-md"
+                              className="text-sm text-base-content/80 hover:text-primary hover:underline truncate max-w-[140px] sm:max-w-sm"
                               title={link.url}
+                              onClick={e => e.stopPropagation()}
                             >
                               {link.url}
                             </a>
                           </div>
-                          <button
-                            type="button"
-                            className="btn btn-ghost btn-xs text-error hover:bg-error/10 px-2"
-                            title="Remove Link"
-                            onClick={() => {
-                              const newList = socialLinks.filter((_, i) => i !== index);
-                              setSocialLinks(newList);
-                            }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
+
+                          {/* Up / Down / Remove */}
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            {index > 0 && (
+                              <button
+                                type="button"
+                                title="Move up"
+                                className="btn btn-ghost btn-xs px-1"
+                                onClick={() => moveLink(index, index - 1)}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 15l7-7 7 7" />
+                                </svg>
+                              </button>
+                            )}
+                            {index < socialLinks.length - 1 && (
+                              <button
+                                type="button"
+                                title="Move down"
+                                className="btn btn-ghost btn-xs px-1"
+                                onClick={() => moveLink(index, index + 1)}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              className="btn btn-ghost btn-xs text-error hover:bg-error/10 px-2"
+                              title="Remove Link"
+                              onClick={() => {
+                                const newList = socialLinks.filter((_, i) => i !== index);
+                                setSocialLinks(newList);
+                                setCookieSocialLinks(newList);
+                              }}
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
