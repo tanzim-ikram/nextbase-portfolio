@@ -3,6 +3,6 @@
 import { revalidatePath } from "next/cache";
 
 export async function revalidateSettings() {
-  revalidatePath("/");
-  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/settings", "layout");
 }

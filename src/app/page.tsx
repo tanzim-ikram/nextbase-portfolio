@@ -27,11 +27,19 @@ export default async function Home() {
     .select("*")
     .order("display_order", { ascending: true });
 
-  let socialLinks = socialLinksData;
-  if (!socialLinks || socialLinks.length === 0) {
-    const cookieStore = await cookies();
+  const cookieStore = await cookies();
+  
+  let socialLinks: any[] = socialLinksData || [];
+  // Always fall back to cookie if DB has no rows
+  if (socialLinks.length === 0) {
     const raw = cookieStore.get("nextbase-social-links")?.value;
-    socialLinks = raw ? JSON.parse(decodeURIComponent(raw)) : [];
+    if (raw) {
+      try {
+        socialLinks = JSON.parse(decodeURIComponent(raw));
+      } catch {
+        socialLinks = [];
+      }
+    }
   }
 
   // Default to true when siteSettings is null (DB not seeded yet)

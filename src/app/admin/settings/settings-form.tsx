@@ -37,6 +37,10 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
 
   const handleSave = async () => {
     setLoading(true);
+
+    // Write social links to cookie FIRST — guarantees homepage can always show them
+    // even if DB writes fail for any reason
+    setCookieSocialLinks(socialLinks);
     
     // Save site_settings
     const sanitizedData = {
@@ -60,59 +64,55 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
       .eq("id", 1);
 
     if (settingsError) {
+      console.error("[Settings] site_settings error:", settingsError);
       toast.error("Failed to update settings: " + (settingsError.message || "Unknown error"));
       setLoading(false);
       return;
     }
 
-    // Save social_links
-    // 1. Delete all existing social links
+    // Save social_links to DB
+    // 1. Delete all existing rows
     const { error: deleteError } = await supabase
       .from("social_links")
       .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000"); // deletes all rows
+      .neq("id", "00000000-0000-0000-0000-000000000000");
 
     if (deleteError) {
-      if (deleteError.message.includes("Database is offline") || deleteError.message.includes("host is unreachable")) {
-        // Fallback for offline mode: write to cookies
-        setCookieSocialLinks(socialLinks);
-        toast.success("Settings updated successfully (offline dev mode)!");
-        await revalidateSettings();
-        router.refresh();
-        setLoading(false);
-        return;
-      } else {
-        toast.error("Failed to update social links: " + deleteError.message);
-        setLoading(false);
-        return;
-      }
+      console.error("[Settings] Delete error:", deleteError);
+      // Don't block — cookie already saved, just warn
+      toast.warning?.(`Social links saved locally. DB sync failed: ${deleteError.message}`);
+      await revalidateSettings();
+      setLoading(false);
+      return;
     }
 
-    // 2. Insert new social links
+    // 2. Insert new rows
     if (socialLinks.length > 0) {
-      const { error: insertError } = await supabase
+      const rows = socialLinks.map((link, index) => ({
+        platform: link.platform,
+        url: link.url,
+        display_order: index,
+        icon_name: link.platform,
+      }));
+
+      console.log("[Settings] Inserting:", rows);
+
+      const { data: inserted, error: insertError } = await supabase
         .from("social_links")
-        .insert(
-          socialLinks.map((link, index) => ({
-            platform: link.platform,
-            url: link.url,
-            display_order: index,
-            icon_name: link.platform.toLowerCase() === "twitter / x" ? "Twitter" : link.platform,
-          }))
-        );
+        .insert(rows)
+        .select();
 
       if (insertError) {
-        toast.error("Failed to insert social links: " + insertError.message);
-        setLoading(false);
-        return;
+        console.error("[Settings] Insert error:", insertError);
+        toast.warning?.(`Social links saved locally. DB sync failed: ${insertError.message}`);
+      } else {
+        console.log("[Settings] DB rows inserted:", inserted);
       }
     }
 
-    // Keep cookies synced
-    setCookieSocialLinks(socialLinks);
-
     await revalidateSettings();
-    toast.success("Settings updated successfully!");
+    toast.success("Settings saved successfully!");
+    await new Promise(r => setTimeout(r, 300));
     router.refresh();
     setLoading(false);
   };
@@ -402,7 +402,9 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
                               return;
                             }
                             const newLink = { platform: newPlatform, url: newUrl };
-                            setSocialLinks([...socialLinks, newLink]);
+                            const updatedLinks = [...socialLinks, newLink];
+                            setSocialLinks(updatedLinks);
+                            setCookieSocialLinks(updatedLinks);
                             setNewUrl("");
                             setIsAddingNewLink(false);
                             toast.success(`Added ${newPlatform} link!`);

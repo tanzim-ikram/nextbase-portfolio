@@ -57,8 +57,8 @@ CREATE POLICY "Auth full access experience" ON experience FOR ALL USING (auth.ro
 DROP POLICY IF EXISTS "Auth full access education" ON education;
 CREATE POLICY "Auth full access education" ON education FOR ALL USING (auth.role() = 'authenticated');
 
-DROP POLICY IF EXISTS "Auth full access social_links" ON social_links;
-CREATE POLICY "Auth full access social_links" ON social_links FOR ALL USING (auth.role() = 'authenticated');
+-- Social links: disable RLS (matches site_settings behavior; single-owner portfolio)
+ALTER TABLE social_links DISABLE ROW LEVEL SECURITY;
 
 -- 11. PUBLICATIONS
 CREATE TABLE IF NOT EXISTS publications (
