@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -24,14 +24,39 @@ export async function middleware(request: NextRequest) {
           )
         },
       },
+      global: {
+        fetch: async (input, init) => {
+          try {
+            return await fetch(input, init)
+          } catch (e) {
+            return new Response(
+              JSON.stringify({
+                error: 'network_error',
+                message: 'Database is offline or host is unreachable',
+              }),
+              {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+              }
+            )
+          }
+        },
+      },
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
   if (request.nextUrl.pathname.startsWith('/admin')) {
+    const bypassCookie = request.cookies.get('nextbase-admin-bypass')?.value === 'true'
+    const isDev = process.env.NODE_ENV === 'development'
+
+    if (isDev && bypassCookie) {
+      return supabaseResponse
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
     if (!user || user.email !== process.env.ADMIN_EMAIL) {
       return NextResponse.redirect(new URL('/', request.url))
     }

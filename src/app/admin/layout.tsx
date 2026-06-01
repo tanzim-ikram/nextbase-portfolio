@@ -29,7 +29,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <LogoutButton />
+          <LogoutButton className="btn btn-secondary btn-sm" />
         </div>
       </header>
 

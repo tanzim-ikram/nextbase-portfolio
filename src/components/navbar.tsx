@@ -3,13 +3,17 @@ import { ThemeToggle } from "./theme-toggle"
 import { NavLinks } from "./nav-links"
 import { siteConfig } from "@/config/site"
 import { createClient } from "@/utils/supabase/server"
-
-
+import { cookies } from "next/headers"
+import { LogoutButton } from "./logout-button"
 
 export async function Navbar() {
   const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
   const { data: settings } = await supabase.from("site_settings").select("*").eq("id", 1).single();
+
+  const cookieStore = await cookies();
+  const isBypassed = cookieStore.get("nextbase-admin-bypass")?.value === "true";
+  const isLoggedIn = !!session || isBypassed;
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -40,11 +44,13 @@ export async function Navbar() {
           itemClassName="py-1.5"
         />
 
-        {/* Right actions */}
         <div className="flex items-center gap-2 ml-auto shrink-0">
           <ThemeToggle />
-          {session ? (
-            <Link href="/admin" className="btn btn-ghost btn-sm">Dashboard</Link>
+          {isLoggedIn ? (
+            <>
+              <Link href="/admin" className="btn btn-primary btn-sm">Dashboard</Link>
+              <LogoutButton className="btn btn-secondary btn-sm" />
+            </>
           ) : (
             <Link href="/login" className="btn btn-ghost btn-sm">Login</Link>
           )}

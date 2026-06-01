@@ -19,8 +19,26 @@ export async function createClient() {
             )
           } catch {
             // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
+            // This can be ignored if you have a proxy refreshing
             // user sessions.
+          }
+        },
+      },
+      global: {
+        fetch: async (input, init) => {
+          try {
+            return await fetch(input, init)
+          } catch (e) {
+            return new Response(
+              JSON.stringify({
+                error: 'network_error',
+                message: 'Database is offline or host is unreachable',
+              }),
+              {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+              }
+            )
           }
         },
       },
