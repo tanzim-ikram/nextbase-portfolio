@@ -18,16 +18,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.bio,
-};
+import { createClient } from "@/utils/supabase/server";
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const supabase = await createClient();
+    const { data: settings } = await supabase.from("site_settings").select("name, bio").eq("id", 1).single();
+    return {
+      title: settings?.name || siteConfig.name,
+      description: settings?.bio || siteConfig.bio,
+    };
+  } catch (e) {
+    return {
+      title: siteConfig.name,
+      description: siteConfig.bio,
+    };
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let settings = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from("site_settings").select("name").eq("id", 1).single();
+    settings = data;
+  } catch (e) {
+    // Graceful fallback
+  }
+
   return (
     <html
       lang="en"
@@ -48,7 +70,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <PublicLayout navbar={<Navbar />} footer={<Footer />}>
+          <PublicLayout navbar={<Navbar />} footer={<Footer name={settings?.name} />}>
             {children}
           </PublicLayout>
           <Toaster />

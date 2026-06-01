@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 import { Hero } from "@/components/home/hero";
 import { About } from "@/components/home/about";
 import { Skills } from "@/components/home/skills";
@@ -20,6 +21,18 @@ export default async function Home() {
     .select("*")
     .eq("id", 1)
     .single();
+
+  const { data: socialLinksData } = await supabase
+    .from("social_links")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  let socialLinks = socialLinksData;
+  if (!socialLinks || socialLinks.length === 0) {
+    const cookieStore = await cookies();
+    const raw = cookieStore.get("nextbase-social-links")?.value;
+    socialLinks = raw ? JSON.parse(decodeURIComponent(raw)) : [];
+  }
 
   // Default to true when siteSettings is null (DB not seeded yet)
   const showExperience = siteSettings?.show_experience ?? true;
@@ -73,7 +86,7 @@ export default async function Home() {
       )}
 
       <FadeIn>
-        <ConnectMe />
+        <ConnectMe settings={siteSettings} socialLinks={socialLinks || []} />
       </FadeIn>
     </div>
   );

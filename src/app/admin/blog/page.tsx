@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { DeleteButton } from "@/components/delete-button";
+import { Pencil } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -45,8 +46,9 @@ export default async function BlogListPage() {
                     <Link
                       href={`/admin/blog/${post.id}/edit`}
                       className="btn btn-ghost btn-xs"
+                      title="Edit"
                     >
-                      Edit
+                      <Pencil className="w-4 h-4" />
                     </Link>
                     <Link
                       href={`/blog/${post.slug}`}

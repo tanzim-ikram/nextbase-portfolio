@@ -39,7 +39,7 @@ export default async function PublicationsPage() {
 
   const renderAuthors = (authorsText: string, highlightAuthor?: string | null) => {
     if (!authorsText) return null;
-    const highlight = highlightAuthor || siteConfig.highlightName || siteConfig.name;
+    const highlight = highlightAuthor || siteConfig.name;
     const list = authorsText.split(",").map((a) => a.trim());
 
     return (

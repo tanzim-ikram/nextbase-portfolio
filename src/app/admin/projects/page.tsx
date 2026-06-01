@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { DeleteButton } from "@/components/delete-button";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Pencil } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -61,8 +61,9 @@ export default async function ProjectsPage() {
                     <Link
                       href={`/admin/projects/${project.id}/edit`}
                       className="btn btn-ghost btn-xs"
+                      title="Edit"
                     >
-                      Edit
+                      <Pencil className="w-4 h-4" />
                     </Link>
                     <DeleteButton id={project.id} table="projects" title={project.title} />
                   </div>

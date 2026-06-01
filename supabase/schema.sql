@@ -8,6 +8,12 @@ CREATE TABLE site_settings (
   hero_subtitle TEXT DEFAULT 'Building digital experiences with Next.js and Supabase',
   logo_url TEXT,
   about_text TEXT,
+  name TEXT DEFAULT 'Your Name',
+  bio TEXT DEFAULT 'A passionate full-stack developer and UI/UX designer building beautiful and functional digital experiences.',
+  github_url TEXT DEFAULT 'https://github.com/yourusername',
+  twitter_url TEXT DEFAULT 'https://twitter.com/yourusername',
+  linkedin_url TEXT DEFAULT 'https://linkedin.com/in/yourusername',
+  email TEXT DEFAULT 'hello@example.com',
   show_services BOOLEAN DEFAULT true,
   show_projects BOOLEAN DEFAULT true,
   show_experience BOOLEAN DEFAULT true,
@@ -17,7 +23,8 @@ CREATE TABLE site_settings (
 );
 
 -- Seed initial settings
-INSERT INTO site_settings (id, hero_title) VALUES (1, 'Welcome to my Portfolio')
+INSERT INTO site_settings (id, hero_title, name, bio, github_url, twitter_url, linkedin_url, email) 
+VALUES (1, 'Welcome to my Portfolio', 'Your Name', 'A passionate full-stack developer and UI/UX designer building beautiful and functional digital experiences.', 'https://github.com/yourusername', 'https://twitter.com/yourusername', 'https://linkedin.com/in/yourusername', 'hello@example.com')
 ON CONFLICT (id) DO NOTHING;
 
 -- 2. BLOG POSTS

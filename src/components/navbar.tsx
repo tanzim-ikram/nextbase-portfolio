@@ -33,8 +33,12 @@ export async function Navbar() {
       <div className="container flex h-14 items-center mx-auto px-4 max-w-7xl">
 
         {/* Logo */}
-        <Link href="/" className="mr-6 flex items-center font-bold shrink-0">
-          {siteConfig.name}
+        <Link href="/" className="mr-6 flex items-center font-bold shrink-0 hover:opacity-85 transition-opacity">
+          {settings?.logo_url ? (
+            <img src={settings.logo_url} alt={`${settings?.name || siteConfig.name} Logo`} className="h-8 w-auto object-contain" />
+          ) : (
+            settings?.name || siteConfig.name
+          )}
         </Link>
 
         {/* Desktop nav */}
@@ -58,7 +62,13 @@ export async function Navbar() {
 
         {/* Mobile logo (when nav hidden) */}
         <div className="md:hidden flex-1 flex justify-center">
-          <Link href="/" className="font-bold">{siteConfig.name}</Link>
+          <Link href="/" className="font-bold hover:opacity-85 transition-opacity">
+            {settings?.logo_url ? (
+              <img src={settings.logo_url} alt={`${settings?.name || siteConfig.name} Logo`} className="h-8 w-auto object-contain" />
+            ) : (
+              settings?.name || siteConfig.name
+            )}
+          </Link>
         </div>
 
       </div>

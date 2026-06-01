@@ -92,3 +92,11 @@ CREATE POLICY "Public read access for publications" ON publications FOR SELECT U
 
 DROP POLICY IF EXISTS "Auth full access publications" ON publications;
 CREATE POLICY "Auth full access publications" ON publications FOR ALL USING (auth.role() = 'authenticated');
+
+-- 12. UPDATE SITE SETTINGS WITH AUTHOR & SOCIAL LINKS
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS name TEXT DEFAULT 'Your Name';
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS bio TEXT DEFAULT 'A passionate full-stack developer and UI/UX designer building beautiful and functional digital experiences.';
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS github_url TEXT DEFAULT 'https://github.com/yourusername';
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS twitter_url TEXT DEFAULT 'https://twitter.com/yourusername';
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS linkedin_url TEXT DEFAULT 'https://linkedin.com/in/yourusername';
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS email TEXT DEFAULT 'hello@example.com';

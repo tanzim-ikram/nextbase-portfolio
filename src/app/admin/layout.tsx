@@ -8,7 +8,16 @@ import { createClient } from "@/utils/supabase/server";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
-  const { data: settings } = await supabase.from("site_settings").select("logo_url").eq("id", 1).single();
+  
+  let settings: any = null;
+  const { data, error } = await supabase.from("site_settings").select("logo_url, name").eq("id", 1).single();
+  if (error) {
+    // Fallback if schema_update wasn't run yet
+    const { data: fallbackData } = await supabase.from("site_settings").select("logo_url").eq("id", 1).single();
+    settings = fallbackData;
+  } else {
+    settings = data;
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-base-100">
@@ -17,13 +26,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-base-300 bg-base-100/95 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 h-14 flex items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           {settings?.logo_url ? (
-            <img src={settings.logo_url} alt={`${siteConfig.name} Logo`} className="h-8 w-auto object-contain" />
+            <img src={settings.logo_url} alt={`${settings?.name || siteConfig.name} Logo`} className="h-8 w-auto object-contain" />
           ) : (
             <>
               <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
                 <LayoutDashboard className="w-4 h-4 text-primary-content" />
               </div>
-              <span className="font-bold text-base">{siteConfig.name} — Admin</span>
+              <span className="font-bold text-base">{settings?.name || siteConfig.name} — Admin</span>
             </>
           )}
         </Link>
