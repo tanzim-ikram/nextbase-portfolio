@@ -1,7 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { DeleteButton } from "@/components/delete-button";
-import { CheckCircle2, XCircle, Pencil } from "lucide-react";
+import { FeaturedToggle } from "@/components/featured-toggle";
+import { Pencil } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -36,15 +37,7 @@ export default async function ProjectsPage() {
                 <td className="font-medium">{project.title}</td>
                 <td>{project.slug}</td>
                 <td>
-                  {project.is_featured ? (
-                    <div className="badge badge-primary gap-1">
-                      <CheckCircle2 className="w-3 h-3" /> Yes
-                    </div>
-                  ) : (
-                    <div className="badge badge-ghost gap-1 text-base-content/60">
-                      <XCircle className="w-3 h-3" /> No
-                    </div>
-                  )}
+                  <FeaturedToggle id={project.id} table="projects" initialFeatured={project.is_featured} />
                 </td>
                 <td>
                   <div className="flex gap-2">

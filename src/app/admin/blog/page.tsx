@@ -1,7 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { DeleteButton } from "@/components/delete-button";
-import { Pencil } from "lucide-react";
+import { PublishToggle } from "@/components/publish-toggle";
+import { Pencil, Eye } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -35,9 +36,7 @@ export default async function BlogListPage() {
               <tr key={post.id}>
                 <td className="font-medium">{post.title}</td>
                 <td>
-                  <div className={`badge ${post.status === "published" ? "badge-primary" : "badge-secondary"}`}>
-                    {post.status}
-                  </div>
+                  <PublishToggle id={post.id} table="posts" initialStatus={post.status} />
                 </td>
                 <td>{post.view_count}</td>
                 <td>{new Date(post.created_at).toLocaleDateString()}</td>
@@ -54,8 +53,9 @@ export default async function BlogListPage() {
                       href={`/blog/${post.slug}`}
                       target="_blank"
                       className="btn btn-ghost btn-xs"
+                      title="View"
                     >
-                      View
+                      <Eye className="w-4 h-4" />
                     </Link>
                     <DeleteButton id={post.id} table="posts" title={post.title} />
                   </div>

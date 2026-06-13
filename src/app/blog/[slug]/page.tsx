@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { TiptapRenderer } from "@/components/tiptap-renderer";
+import { cookies } from "next/headers";
 
 export const revalidate = 0;
 
@@ -18,8 +19,15 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     notFound();
   }
 
-  // Increment view count
-  await supabase.rpc("increment_view_count", { post_id: post.id });
+  const { data: { session } } = await supabase.auth.getSession();
+  const cookieStore = await cookies();
+  const isBypassed = cookieStore.get("nextbase-admin-bypass")?.value === "true";
+  const isLoggedIn = !!session || isBypassed;
+
+  // Increment view count only for public users
+  if (!isLoggedIn) {
+    await supabase.rpc("increment_view_count", { post_id: post.id });
+  }
 
   return (
     <article className="container mx-auto px-4 max-w-3xl py-12">
@@ -30,7 +38,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <span>•</span>
           <span>{post.reading_time || "5 min read"}</span>
           <span>•</span>
-          <span>{post.view_count + 1} views</span>
+          <span>{isLoggedIn ? post.view_count : post.view_count + 1} views</span>
         </div>
         <div className="flex flex-wrap gap-2 mt-4">
           {post.tags?.map((tag: string) => (
