@@ -52,6 +52,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <li><Link href="/admin" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Overview</Link></li>
             <li><Link href="/admin/blog" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Blog Posts</Link></li>
             <li><Link href="/admin/projects" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Projects</Link></li>
+            <li><Link href="/admin/skills" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Skills</Link></li>
             <li><Link href="/admin/media" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Media Gallery</Link></li>
             <li><Link href="/admin/experience" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Experience</Link></li>
             <li><Link href="/admin/education" className="hover:bg-primary hover:text-primary-content transition-colors font-medium">Education</Link></li>
