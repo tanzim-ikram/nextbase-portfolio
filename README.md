@@ -56,10 +56,14 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser to see your live portfolio!
 
-### 5. Access the Admin Dashboard
-1. Navigate to [http://localhost:3000/login](http://localhost:3000/login).
-2. Sign up / Login using the email you specified in `ADMIN_EMAIL`.
-3. Once authenticated, you will be redirected to the `/admin` dashboard to start customizing your site content.
+### 5. Create Your Admin User & Login
+Since this is a private CMS, public sign-ups are not available. You must create your admin user directly in Supabase.
+
+1. Go to your Supabase Project Dashboard -> **Authentication** -> **Users**.
+2. Click **Add User** -> **Create New User** (Disable "Auto Confirm User" if you haven't set up email sending yet, or manually verify the user row).
+3. Enter the **exact email** you set as `ADMIN_EMAIL` in your `.env.local` and a secure password.
+4. Now, navigate to [http://localhost:3000/login](http://localhost:3000/login) in your local app.
+5. Login with the credentials you just created to access the `/admin` dashboard and start customizing your site content!
 
 *(Note: If you run into database connection issues locally, the template has a built-in offline dev bypass that grants access to the dashboard using cookies so you can still preview the UI).*
 
