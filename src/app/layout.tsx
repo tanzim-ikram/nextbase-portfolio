@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PublicLayout } from "@/components/public-layout";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -73,6 +74,7 @@ export default async function RootLayout({
           <PublicLayout navbar={<Navbar />} footer={<Footer name={settings?.name} />}>
             {children}
           </PublicLayout>
+          <ScrollToTop />
           <Toaster />
         </ThemeProvider>
       </body>

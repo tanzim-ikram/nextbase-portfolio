@@ -81,6 +81,8 @@ export function TiptapEditor({
         heading: { levels: [1, 2, 3, 4] },
         bulletList: { keepMarks: true, keepAttributes: false },
         orderedList: { keepMarks: true, keepAttributes: false },
+        link: false,
+        underline: false,
       }),
       Image.configure({
         inline: false,
