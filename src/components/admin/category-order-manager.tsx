@@ -92,7 +92,7 @@ export function CategoryOrderManager({
             Define the display order of categories on your home page. Lower numbers appear first. Use the Up/Down buttons or input values directly.
           </p>
 
-          <div className="space-y-2 max-w-2xl">
+          <div className="space-y-2 w-full">
             {categories.map((cat, idx) => (
               <div 
                 key={cat.name} 
