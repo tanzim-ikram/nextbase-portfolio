@@ -1,29 +1,88 @@
 # NextBase Portfolio
 
-A professional portfolio template built with Next.js 15, Supabase, Tailwind CSS, and shadcn/ui.
+A modern, highly customizable developer portfolio and CMS template. Built with Next.js 15, Supabase, Tailwind CSS, and shadcn/ui. 
 
-## Quick Start
+It comes with a fully-featured Admin Dashboard right out of the box, allowing you to manage your blog posts, projects, skills, publications, and site settings without touching code.
 
-1. **Database Setup**: 
-   - Open your Supabase project dashboard.
-   - Navigate to the SQL Editor.
-   - Copy the contents of `supabase/schema.sql` from this project and run it in the SQL Editor to initialize your database schema.
+## 🚀 Features
 
-2. **Environment Variables**:
-   - Create a `.env.local` file at the root of the project.
-   - Add your Supabase URL, Anon Key, and Admin Email:
-     ```env
-     NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-     ADMIN_EMAIL=your-email@example.com
-     ```
+- **Dynamic Admin Dashboard**: Manage your content (Blog, Projects, Skills, Media) via a protected `/admin` route.
+- **Built-in CMS**: Write and publish rich-text blog posts.
+- **Media Gallery**: Upload and manage images directly to Supabase Storage.
+- **Customizable UI**: Fully responsive, dark-mode ready (via daisyUI/shadcn).
+- **Offline Dev Fallbacks**: Built-in mock data strategies so you can work locally even if the database is unreachable.
+- **E2E Testing**: Pre-configured Playwright test suite.
 
-3. **Development**:
-   - Run `npm install` to install dependencies.
-   - Run `npm run dev` to start the local development server.
-   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 🛠 Tech Stack
 
-## Features
-- Protected `/admin` routes restricted to specific emails using Supabase Middleware.
-- Built-in Dark Mode theme via shadcn/ui.
-- Pre-configured `siteConfig` for easy profile updates.
+- **Framework:** Next.js 15 (App Router)
+- **Database & Auth:** Supabase (PostgreSQL)
+- **Styling:** Tailwind CSS & DaisyUI
+- **Icons:** Lucide React
+- **Testing:** Playwright
+
+---
+
+## 🚦 Quick Start Guide
+
+Follow these steps to get your portfolio up and running locally.
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/nextbase-portfolio.git
+cd nextbase-portfolio
+npm install
+```
+
+### 2. Set up Supabase
+1. Create a new project on [Supabase](https://supabase.com).
+2. Go to the **SQL Editor** in your Supabase dashboard.
+3. Open the `supabase/schema.sql` file from this repository, copy its entire contents, and run it in the SQL Editor. 
+   *(This script will create all necessary tables, set up Row Level Security (RLS), configure storage buckets, and insert default dummy data).*
+
+### 3. Configure Environment Variables
+Create a `.env.local` file in the root of the project and add your Supabase credentials:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+ADMIN_EMAIL=your-email@example.com
+```
+*Note: The `ADMIN_EMAIL` is used to restrict access to the `/admin` dashboard. Make sure this matches the email you use to sign in.*
+
+### 4. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to see your live portfolio!
+
+### 5. Access the Admin Dashboard
+1. Navigate to [http://localhost:3000/login](http://localhost:3000/login).
+2. Sign up / Login using the email you specified in `ADMIN_EMAIL`.
+3. Once authenticated, you will be redirected to the `/admin` dashboard to start customizing your site content.
+
+*(Note: If you run into database connection issues locally, the template has a built-in offline dev bypass that grants access to the dashboard using cookies so you can still preview the UI).*
+
+---
+
+## 🧪 Testing
+
+This template includes Playwright for End-to-End testing.
+
+```bash
+# Run all tests
+npm run test:e2e
+
+# View the test report
+npx playwright show-report
+```
+
+## 🚢 Deployment
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+Don't forget to add your `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `ADMIN_EMAIL` to your Vercel Environment Variables before deploying.
+
+---
+
+## License
+MIT License. Feel free to use, modify, and distribute this template as you see fit.

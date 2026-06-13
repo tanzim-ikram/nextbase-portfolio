@@ -1,7 +1,9 @@
 {
-  "name": "temp_app",
+  "name": "nextbase-portfolio",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "A professional developer portfolio CMS built with Next.js, Supabase, and TailwindCSS.",
+  "author": "Your Name",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
