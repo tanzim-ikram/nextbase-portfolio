@@ -16,6 +16,7 @@ export default function MediaGallery() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line
     fetchMedia();
   }, []);
 

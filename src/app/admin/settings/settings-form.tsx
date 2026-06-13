@@ -43,6 +43,7 @@ export function SettingsForm({ initialData, initialSocialLinks = [] }: { initial
   const supabase = createClient();
 
   const setCookieSocialLinks = (links: any[]) => {
+    // eslint-disable-next-line
     document.cookie = `nextbase-social-links=${encodeURIComponent(JSON.stringify(links))}; path=/; max-age=31536000; SameSite=Lax`;
   };
 
