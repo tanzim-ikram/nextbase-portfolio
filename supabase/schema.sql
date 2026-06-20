@@ -148,7 +148,7 @@ BEGIN
   SET view_count = view_count + 1
   WHERE id = post_id;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- 13. STORAGE BUCKET
 INSERT INTO storage.buckets (id, name, public) 
@@ -158,6 +158,7 @@ ON CONFLICT (id) DO NOTHING;
 -- Storage RLS Policies
 CREATE POLICY "Public Access" 
 ON storage.objects FOR SELECT 
+TO authenticated 
 USING (bucket_id = 'portfolio_media');
 
 CREATE POLICY "Auth Insert" 
@@ -184,11 +185,11 @@ ALTER TABLE experience ENABLE ROW LEVEL SECURITY;
 ALTER TABLE education ENABLE ROW LEVEL SECURITY;
 ALTER TABLE media ENABLE ROW LEVEL SECURITY;
 ALTER TABLE skills ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_links ENABLE ROW LEVEL SECURITY;
 
--- Note: site_settings, social_links, and skill_categories are intentionally left without RLS 
+-- Note: site_settings, and skill_categories are intentionally left without RLS 
 -- or have it disabled to allow client-side admin actions during local dev.
 ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
-ALTER TABLE social_links DISABLE ROW LEVEL SECURITY;
 ALTER TABLE skill_categories DISABLE ROW LEVEL SECURITY;
 
 -- DROP ALL EXISTING POLICIES TO PREVENT DUPLICATES ON RE-RUN
@@ -199,7 +200,7 @@ BEGIN
   FOR r IN (
     SELECT policyname, tablename
     FROM pg_policies
-    WHERE schemaname = 'public' AND tablename IN ('posts', 'projects', 'publications', 'services', 'experience', 'education', 'media', 'skills')
+    WHERE schemaname = 'public' AND tablename IN ('posts', 'projects', 'publications', 'services', 'experience', 'education', 'media', 'skills', 'social_links')
   )
   LOOP
     EXECUTE 'DROP POLICY IF EXISTS "' || r.policyname || '" ON public.' || r.tablename;
@@ -214,8 +215,8 @@ CREATE POLICY "Public read access for publications" ON publications FOR SELECT U
 CREATE POLICY "Public read access for services" ON services FOR SELECT USING (true);
 CREATE POLICY "Public read access for experience" ON experience FOR SELECT USING (true);
 CREATE POLICY "Public read access for education" ON education FOR SELECT USING (true);
-CREATE POLICY "Public read access for media" ON media FOR SELECT USING (true);
 CREATE POLICY "Public read access for skills" ON skills FOR SELECT USING (true);
+CREATE POLICY "Public read access for social_links" ON social_links FOR SELECT USING (true);
 
 -- AUTH FULL ACCESS (Authenticated Admin can do everything)
 CREATE POLICY "Auth full access posts" ON posts FOR ALL USING (auth.role() = 'authenticated');
@@ -226,6 +227,7 @@ CREATE POLICY "Auth full access experience" ON experience FOR ALL USING (auth.ro
 CREATE POLICY "Auth full access education" ON education FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Auth full access media" ON media FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Auth full access skills" ON skills FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access social_links" ON social_links FOR ALL USING (auth.role() = 'authenticated');
 
 -- SEED DATA
 -- Seed default categories with orders

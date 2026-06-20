@@ -8,6 +8,8 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
+import { TextStyle } from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   Heading1, Heading2, Heading3, Heading4,
@@ -98,6 +100,8 @@ export function TiptapEditor({
       TextAlign.configure({ types: ["heading", "paragraph", "image"] }),
       Highlight.configure({ multicolor: true }),
       Placeholder.configure({ placeholder: "Start writing your post..." }),
+      TextStyle,
+      Color,
     ],
     content: content || "",
     immediatelyRender: false,
