@@ -57,9 +57,9 @@ export async function FeaturedProjects() {
   return (
     <section id="projects" className="py-12 md:py-24">
       <div className="w-full mx-auto space-y-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold tracking-tight">My Work</h2>
-          <Link href="/projects" className="btn btn-ghost btn-sm">View all →</Link>
+        <div className="relative flex items-center justify-center">
+          <h2 className="text-3xl font-bold tracking-tight text-center">My Work</h2>
+          <Link href="/projects" className="btn btn-ghost btn-sm absolute right-0">View all →</Link>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project: any) => (
