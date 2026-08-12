@@ -2,8 +2,8 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    # Runs every Monday and Thursday at 12:00 UTC (twice per week, well within the 7-day window)
-    - cron: '0 12 * * 1,4'
+    # Runs every day at 12:00 UTC (daily ping to prevent the 7-day inactivity pause)
+    - cron: '0 12 * * *'
   # Allow manual triggering from the GitHub Actions tab for testing
   workflow_dispatch:
 
@@ -13,19 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Query Supabase (site_settings table)
+      - name: Query Supabase to keep it alive
         id: ping
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
+          # Validate that secrets are set
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "❌ ERROR: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY secrets are not set in GitHub."
+            echo "Please add them under: Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+
+          echo "🔄 Pinging Supabase at: $SUPABASE_URL"
+
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/site_settings?limit=1" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+            "${SUPABASE_URL}/rest/v1/site_settings?select=*&limit=1" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json")
 
           echo "HTTP Status: $HTTP_STATUS"
 
           if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
-            echo "✅ Supabase ping successful. Project is alive."
+            echo "✅ Supabase ping successful (status $HTTP_STATUS). Project is alive."
           else
             echo "❌ Supabase ping failed with status $HTTP_STATUS."
+            echo "Check that the secret values are correct and the table 'site_settings' exists and is accessible."
             exit 1
           fi
